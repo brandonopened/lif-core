@@ -215,6 +215,19 @@ const MappingsView: React.FC = () => {
         suggestion: SuggestedMappingWire;
         position: { x: number; y: number };
     } | null>(null);
+    // Refs to avoid recreating handleAttributeClick on every state change
+    const suggestedMappingsRef = useRef(suggestedMappings);
+    suggestedMappingsRef.current = suggestedMappings;
+    const activeFieldIdRef = useRef(activeFieldId);
+    activeFieldIdRef.current = activeFieldId;
+    const groupRef = useRef(group);
+    groupRef.current = group;
+    const sourceModelRef = useRef(sourceModel);
+    sourceModelRef.current = sourceModel;
+    const targetModelRef = useRef(targetModel);
+    targetModelRef.current = targetModel;
+    const transformationsRef = useRef(transformations);
+    transformationsRef.current = transformations;
 
     // Build a JSONata-compatible expression path like EntityA.EntityB.Attribute from an EntityIdPath.
     // Uses entity/attribute NAMES (not IDs) because JSONata navigates JSON documents by property names.
@@ -526,29 +539,29 @@ const MappingsView: React.FC = () => {
     // AI suggestion handlers
     const handleAttributeClick = useCallback(
         async (attrId: number, entityPath: string | null, side: 'left' | 'right') => {
-            if (groupId < 0 || !group) return;
+            if (groupId < 0 || !groupRef.current) return;
             setActiveSuggestionPopover(null);
 
             // If suggestions are active from a source click and user now clicks a target,
             // create a manual mapping between the active source and this target
-            if (side === 'right' && activeFieldId != null && suggestedMappings.length > 0) {
-                const srcAttrId = activeFieldId;
+            if (side === 'right' && activeFieldIdRef.current != null && suggestedMappingsRef.current.length > 0) {
+                const srcAttrId = activeFieldIdRef.current;
                 const srcEl = findAttrElement(attrElementsLeft.current, srcAttrId, null);
                 const tgtEl = findAttrElement(attrElementsRight.current, attrId, null);
                 const srcPath = srcEl?.getAttribute('data-entity-path') || null;
                 const tgtPath = entityPath || tgtEl?.getAttribute('data-entity-path') || null;
 
-                const srcAttrName = sourceModel?.Entities
+                const srcAttrName = sourceModelRef.current?.Entities
                     .flatMap((e) => e.Attributes)
                     .find((a) => a.Id === srcAttrId)?.Name || 'source';
-                const tgtAttrName = targetModel?.Entities
+                const tgtAttrName = targetModelRef.current?.Entities
                     .flatMap((e) => e.Attributes)
                     .find((a) => a.Id === attrId)?.Name || 'target';
 
                 try {
                     const result = await createOrUpdateTransformation(
                         {
-                            TransformationGroupId: group.Id,
+                            TransformationGroupId: groupRef.current.Id,
                             ExpressionLanguage: 'JSONata',
                             Expression: `${tgtAttrName} = ${srcAttrName}`,
                             Name: tgtAttrName,
@@ -563,7 +576,7 @@ const MappingsView: React.FC = () => {
                                 EntityIdPath: tgtPath ? appendAttributeToPath(tgtPath, attrId) : undefined,
                             },
                         },
-                        transformations,
+                        transformationsRef.current,
                     );
                     setTransformations((prev) => {
                         const idx = prev.findIndex((t) => t.Id === result.Id);
@@ -590,12 +603,12 @@ const MappingsView: React.FC = () => {
                 entityPath,
             );
         },
-        [groupId, group, fetchSuggestions, activeFieldId, suggestedMappings, sourceModel, targetModel, transformations, clearSuggestions, showToast, findAttrElement]
+        [groupId, fetchSuggestions, clearSuggestions, showToast, findAttrElement]
     );
 
     const handleSuggestedWireClick = useCallback(
         (suggestionId: string, e: React.MouseEvent) => {
-            const suggestion = suggestedMappings.find((s) => s.id === suggestionId);
+            const suggestion = suggestedMappingsRef.current.find((s) => s.id === suggestionId);
             if (!suggestion) return;
             const containerRect = (wiresSlotRef.current || containerRef.current)?.getBoundingClientRect();
             if (!containerRect) return;
@@ -607,13 +620,13 @@ const MappingsView: React.FC = () => {
                 },
             });
         },
-        [suggestedMappings]
+        []
     );
 
     const handleSuggestionConfirm = useCallback(
         async (suggestionId: string) => {
             const suggestion = confirmSuggestion(suggestionId);
-            if (!suggestion || !group) return;
+            if (!suggestion || !groupRef.current) return;
             setActiveSuggestionPopover(null);
             try {
                 // Look up entity paths from the DOM elements (attribute rows have data-entity-path)
@@ -641,24 +654,24 @@ const MappingsView: React.FC = () => {
                 };
 
                 // Build a default expression
-                const srcAttrName = sourceModel?.Entities
+                const srcAttrName = sourceModelRef.current?.Entities
                     .flatMap((e) => e.Attributes)
                     .find((a) => a.Id === suggestion.sourceAttrId)?.Name || 'source';
-                const tgtAttrName = targetModel?.Entities
+                const tgtAttrName = targetModelRef.current?.Entities
                     .flatMap((e) => e.Attributes)
                     .find((a) => a.Id === suggestion.targetAttrId)?.Name || 'target';
                 const expression = `${tgtAttrName} = ${srcAttrName}`;
 
                 const result = await createOrUpdateTransformation(
                     {
-                        TransformationGroupId: group.Id,
+                        TransformationGroupId: groupRef.current.Id,
                         ExpressionLanguage: 'JSONata',
                         Expression: expression,
                         Name: tgtAttrName,
                         SourceAttributes: [srcAttrPayload],
                         TargetAttribute: tgtAttrPayload,
                     },
-                    transformations,
+                    transformationsRef.current,
                 );
 
                 // Update local state with new/updated transformation
@@ -685,7 +698,7 @@ const MappingsView: React.FC = () => {
                 showToast(errorToString(err), 'error');
             }
         },
-        [group, sourceModel, targetModel, transformations, confirmSuggestion, showToast, findAttrElement]
+        [confirmSuggestion, showToast, findAttrElement]
     );
 
     const handleSuggestionReject = useCallback(
