@@ -62,6 +62,9 @@ import ImportGroupDialog from './components/ImportGroupDialog';
 import ForkGroupDialog from './components/ForkGroupDialog';
 import DetachSourcesDialog from './components/DetachSourcesDialog';
 import BulkTransformationsDialog from './components/BulkTransformationsDialog';
+import SuggestionPopover from './components/SuggestionPopover';
+import useSuggestedMappings from './hooks/useSuggestedMappings';
+import type { SuggestedMappingWire } from './hooks/useSuggestedMappings';
 import { trackEvent } from '../../../utils/analytics';
 import { downloadJsonFile } from '../../../utils/downloadJsonFile';
 import { Pencil2Icon, LayersIcon, UploadIcon, DownloadIcon } from "@radix-ui/react-icons";
@@ -192,6 +195,26 @@ const MappingsView: React.FC = () => {
     // Guard against duplicate handleUp invocations caused by the synthetic mouseup
     // that handleMove dispatches after the button is released.
     const reassignProcessingRef = useRef(false);
+
+    // AI suggestion state
+    const {
+        suggestedMappings,
+        loadingSuggestions,
+        activeFieldId,
+        fetchSuggestions,
+        confirmSuggestion,
+        rejectSuggestion,
+        clearSuggestions,
+    } = useSuggestedMappings({
+        sourceModel,
+        targetModel,
+        transformations,
+        groupId,
+    });
+    const [activeSuggestionPopover, setActiveSuggestionPopover] = useState<{
+        suggestion: SuggestedMappingWire;
+        position: { x: number; y: number };
+    } | null>(null);
 
     // Build a JSONata-compatible expression path like EntityA.EntityB.Attribute from an EntityIdPath.
     // Uses entity/attribute NAMES (not IDs) because JSONata navigates JSON documents by property names.
@@ -429,6 +452,25 @@ const MappingsView: React.FC = () => {
         setEditingTransformation(null);
     }, []);
 
+    // Helper to find an attribute element by ID, searching all path-scoped keys
+    const findAttrElement = useCallback((map: Map<string, HTMLElement>, attrId: number, entityIdPath: string | null): HTMLElement | null => {
+        // Try exact path key first
+        if (entityIdPath) {
+            const exactKey = `${entityIdPath}|${attrId}`;
+            const el = map.get(exactKey);
+            if (el) return el;
+        }
+        // Try plain ID key
+        const plainEl = map.get(String(attrId));
+        if (plainEl) return plainEl;
+        // Search all keys ending with |attrId
+        const suffix = `|${attrId}`;
+        for (const [key, el] of map) {
+            if (key.endsWith(suffix)) return el;
+        }
+        return null;
+    }, []);
+
     const scrollAttrIntoView = useCallback(
         (side: 'left' | 'right', attrId: number) => {
             const container =
@@ -438,7 +480,7 @@ const MappingsView: React.FC = () => {
                     ? attrElementsLeft.current
                     : attrElementsRight.current;
             if (!container) return;
-            const el = map.get(String(attrId));
+            const el = findAttrElement(map, attrId, null);
             if (!el) return;
             const containerRect = container.getBoundingClientRect();
             const elRect = el.getBoundingClientRect();
@@ -449,7 +491,7 @@ const MappingsView: React.FC = () => {
             );
             container.scrollTo({ top: targetScrollTop, behavior: 'smooth' });
         },
-        []
+        [findAttrElement]
     );
 
     const handleSourceDotDoubleClick = useCallback(
@@ -479,6 +521,179 @@ const MappingsView: React.FC = () => {
             openExpressionEditor(t);
         },
         [transformations, scrollAttrIntoView, openExpressionEditor]
+    );
+
+    // AI suggestion handlers
+    const handleAttributeClick = useCallback(
+        async (attrId: number, entityPath: string | null, side: 'left' | 'right') => {
+            if (groupId < 0 || !group) return;
+            setActiveSuggestionPopover(null);
+
+            // If suggestions are active from a source click and user now clicks a target,
+            // create a manual mapping between the active source and this target
+            if (side === 'right' && activeFieldId != null && suggestedMappings.length > 0) {
+                const srcAttrId = activeFieldId;
+                const srcEl = findAttrElement(attrElementsLeft.current, srcAttrId, null);
+                const tgtEl = findAttrElement(attrElementsRight.current, attrId, null);
+                const srcPath = srcEl?.getAttribute('data-entity-path') || null;
+                const tgtPath = entityPath || tgtEl?.getAttribute('data-entity-path') || null;
+
+                const srcAttrName = sourceModel?.Entities
+                    .flatMap((e) => e.Attributes)
+                    .find((a) => a.Id === srcAttrId)?.Name || 'source';
+                const tgtAttrName = targetModel?.Entities
+                    .flatMap((e) => e.Attributes)
+                    .find((a) => a.Id === attrId)?.Name || 'target';
+
+                try {
+                    const result = await createOrUpdateTransformation(
+                        {
+                            TransformationGroupId: group.Id,
+                            ExpressionLanguage: 'JSONata',
+                            Expression: `${tgtAttrName} = ${srcAttrName}`,
+                            Name: tgtAttrName,
+                            SourceAttributes: [{
+                                AttributeId: srcAttrId,
+                                AttributeType: 'Source' as const,
+                                EntityIdPath: srcPath ? appendAttributeToPath(srcPath, srcAttrId) : undefined,
+                            }],
+                            TargetAttribute: {
+                                AttributeId: attrId,
+                                AttributeType: 'Target' as const,
+                                EntityIdPath: tgtPath ? appendAttributeToPath(tgtPath, attrId) : undefined,
+                            },
+                        },
+                        transformations,
+                    );
+                    setTransformations((prev) => {
+                        const idx = prev.findIndex((t) => t.Id === result.Id);
+                        const enriched: DisplayTransformationData = {
+                            ...result,
+                            SourceEntity: entityByIdRef.current.get(result.SourceAttributes?.[0]?.AttributeId as any),
+                            TargetEntity: entityByIdRef.current.get(result.TargetAttribute?.EntityId as any),
+                        };
+                        if (idx >= 0) { const next = [...prev]; next[idx] = enriched; return next; }
+                        return [...prev, enriched];
+                    });
+                    clearSuggestions();
+                } catch (err) {
+                    console.error('Failed to create manual mapping:', err);
+                    showToast(errorToString(err), 'error');
+                }
+                return;
+            }
+
+            // Otherwise, fetch suggestions for the clicked field
+            fetchSuggestions(
+                side === 'left' ? 'source' : 'target',
+                attrId,
+                entityPath,
+            );
+        },
+        [groupId, group, fetchSuggestions, activeFieldId, suggestedMappings, sourceModel, targetModel, transformations, clearSuggestions, showToast, findAttrElement]
+    );
+
+    const handleSuggestedWireClick = useCallback(
+        (suggestionId: string, e: React.MouseEvent) => {
+            const suggestion = suggestedMappings.find((s) => s.id === suggestionId);
+            if (!suggestion) return;
+            const containerRect = (wiresSlotRef.current || containerRef.current)?.getBoundingClientRect();
+            if (!containerRect) return;
+            setActiveSuggestionPopover({
+                suggestion,
+                position: {
+                    x: e.clientX - containerRect.left,
+                    y: e.clientY - containerRect.top,
+                },
+            });
+        },
+        [suggestedMappings]
+    );
+
+    const handleSuggestionConfirm = useCallback(
+        async (suggestionId: string) => {
+            const suggestion = confirmSuggestion(suggestionId);
+            if (!suggestion || !group) return;
+            setActiveSuggestionPopover(null);
+            try {
+                // Look up entity paths from the DOM elements (attribute rows have data-entity-path)
+                const srcEl = findAttrElement(attrElementsLeft.current, suggestion.sourceAttrId, null);
+                const tgtEl = findAttrElement(attrElementsRight.current, suggestion.targetAttrId, null);
+                const srcEntityPath = srcEl?.getAttribute('data-entity-path') || null;
+                const tgtEntityPath = tgtEl?.getAttribute('data-entity-path') || null;
+
+                // Build source attribute payload
+                const srcAttrPayload = {
+                    AttributeId: suggestion.sourceAttrId,
+                    AttributeType: 'Source' as const,
+                    EntityIdPath: srcEntityPath
+                        ? appendAttributeToPath(srcEntityPath, suggestion.sourceAttrId)
+                        : undefined,
+                };
+
+                // Build target attribute payload
+                const tgtAttrPayload = {
+                    AttributeId: suggestion.targetAttrId,
+                    AttributeType: 'Target' as const,
+                    EntityIdPath: tgtEntityPath
+                        ? appendAttributeToPath(tgtEntityPath, suggestion.targetAttrId)
+                        : undefined,
+                };
+
+                // Build a default expression
+                const srcAttrName = sourceModel?.Entities
+                    .flatMap((e) => e.Attributes)
+                    .find((a) => a.Id === suggestion.sourceAttrId)?.Name || 'source';
+                const tgtAttrName = targetModel?.Entities
+                    .flatMap((e) => e.Attributes)
+                    .find((a) => a.Id === suggestion.targetAttrId)?.Name || 'target';
+                const expression = `${tgtAttrName} = ${srcAttrName}`;
+
+                const result = await createOrUpdateTransformation(
+                    {
+                        TransformationGroupId: group.Id,
+                        ExpressionLanguage: 'JSONata',
+                        Expression: expression,
+                        Name: tgtAttrName,
+                        SourceAttributes: [srcAttrPayload],
+                        TargetAttribute: tgtAttrPayload,
+                    },
+                    transformations,
+                );
+
+                // Update local state with new/updated transformation
+                setTransformations((prev) => {
+                    const idx = prev.findIndex((t) => t.Id === result.Id);
+                    const enriched: DisplayTransformationData = {
+                        ...result,
+                        SourceEntity: entityByIdRef.current.get(
+                            result.SourceAttributes?.[0]?.AttributeId as any
+                        ),
+                        TargetEntity: entityByIdRef.current.get(
+                            result.TargetAttribute?.EntityId as any
+                        ),
+                    };
+                    if (idx >= 0) {
+                        const next = [...prev];
+                        next[idx] = enriched;
+                        return next;
+                    }
+                    return [...prev, enriched];
+                });
+            } catch (err) {
+                console.error('Failed to confirm suggestion:', err);
+                showToast(errorToString(err), 'error');
+            }
+        },
+        [group, sourceModel, targetModel, transformations, confirmSuggestion, showToast, findAttrElement]
+    );
+
+    const handleSuggestionReject = useCallback(
+        (suggestionId: string) => {
+            rejectSuggestion(suggestionId);
+            setActiveSuggestionPopover(null);
+        },
+        [rejectSuggestion]
     );
 
     const fetchTransformations = useCallback(async () => {
@@ -2105,6 +2320,38 @@ const MappingsView: React.FC = () => {
     });
     useEffect(() => setWirePaths(hookWirePaths), [hookWirePaths]);
 
+    // Compute SVG paths for AI-suggested mapping wires
+    const suggestedWirePaths = useMemo(() => {
+        const containerRect = (wiresSlotRef.current || containerRef.current)?.getBoundingClientRect();
+        if (!containerRect || suggestedMappings.length === 0) return [];
+        return suggestedMappings.map((s) => {
+            const leftEl = findAttrElement(attrElementsLeft.current, s.sourceAttrId, s.sourceEntityIdPath);
+            const rightEl = findAttrElement(attrElementsRight.current, s.targetAttrId, s.targetEntityIdPath);
+            if (!leftEl || !rightEl) return null;
+            const leftDot = leftEl.querySelector<HTMLElement>('.mappings-column__dot--end');
+            const rightDot = rightEl.querySelector<HTMLElement>('.mappings-column__dot--start');
+            const lb = (leftDot || leftEl).getBoundingClientRect();
+            const rb = (rightDot || rightEl).getBoundingClientRect();
+            const startX = lb.left + lb.width / 2 - containerRect.left;
+            const startY = lb.top + lb.height / 2 - containerRect.top;
+            const endX = rb.left + rb.width / 2 - containerRect.left;
+            const endY = rb.top + rb.height / 2 - containerRect.top;
+            const dx = endX - startX;
+            const c1x = startX + dx * 0.35;
+            const c2x = endX - dx * 0.35;
+            const d = `M ${startX} ${startY} C ${c1x} ${startY}, ${c2x} ${endY}, ${endX} ${endY}`;
+            return { id: s.id, d, srcId: s.sourceAttrId, tgtId: s.targetAttrId, confidence: s.confidence };
+        }).filter((p): p is NonNullable<typeof p> => p !== null);
+    }, [suggestedMappings, wirePaths, findAttrElement]); // wirePaths as dep to recompute when scroll/layout changes
+
+    // Auto-scroll to the first suggestion's target when suggestions arrive
+    useEffect(() => {
+        if (suggestedMappings.length === 0) return;
+        const first = suggestedMappings[0];
+        // Scroll the opposite side to make the top suggestion visible
+        scrollAttrIntoView('right', first.targetAttrId);
+    }, [suggestedMappings, scrollAttrIntoView]);
+
     const formatShortDate = (iso?: string) => {
         if (!iso) return '';
         const d = new Date(iso);
@@ -2703,6 +2950,7 @@ const MappingsView: React.FC = () => {
                             setIsDragging(true);
                         }}
                         onSourceDotDoubleClick={handleSourceDotDoubleClick}
+                        onAttributeClick={handleAttributeClick}
                         transformations={transformations}
                         loading={sourceLoading}
                         disableInteractions={groupId < 0}
@@ -2756,6 +3004,7 @@ const MappingsView: React.FC = () => {
                         onHoverAttr={setHoveredAttrKey}
                         dragTargetAttrId={groupId < 0 ? null : dragTargetAttrId}
                         dragTargetPath={groupId < 0 ? null : dragTargetPath}
+                        onAttributeClick={handleAttributeClick}
                         transformations={transformations}
                         loading={targetLoading}
                         disableInteractions={groupId < 0}
@@ -2807,6 +3056,8 @@ const MappingsView: React.FC = () => {
                         dragPath={dragPath || undefined}
                         reassignPaths={reassignPaths}
                         detachPaths={wireDetachPaths}
+                        suggestedPaths={suggestedWirePaths}
+                        onSuggestedWireClick={handleSuggestedWireClick}
                         onEmptyClick={() => {
                             setSelectedTransformationIds(new Set());
                             setSelectionAll(false);
@@ -2815,6 +3066,8 @@ const MappingsView: React.FC = () => {
                             setReassignActive(false);
                             pendingReassignRef.current = null;
                             setSelectedWireSourceAttrIds(new Set());
+                            clearSuggestions();
+                            setActiveSuggestionPopover(null);
                         }}
                         onWireClick={(transId, srcAttrId, e) => {
                             e.stopPropagation();
@@ -2885,6 +3138,40 @@ const MappingsView: React.FC = () => {
                         }}
                         onWireDoubleClick={(transId, _srcAttrId) => handleWireDoubleClick(transId)}
                     />
+                    {activeSuggestionPopover && (
+                        <SuggestionPopover
+                            suggestion={activeSuggestionPopover.suggestion}
+                            sourceName={
+                                sourceModel?.Entities
+                                    .flatMap((e) => e.Attributes)
+                                    .find((a) => a.Id === activeSuggestionPopover.suggestion.sourceAttrId)?.Name || '?'
+                            }
+                            targetName={
+                                targetModel?.Entities
+                                    .flatMap((e) => e.Attributes)
+                                    .find((a) => a.Id === activeSuggestionPopover.suggestion.targetAttrId)?.Name || '?'
+                            }
+                            position={activeSuggestionPopover.position}
+                            onConfirm={handleSuggestionConfirm}
+                            onReject={handleSuggestionReject}
+                        />
+                    )}
+                    {loadingSuggestions && (
+                        <div className="suggestion-loading" style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            background: 'rgba(255,255,255,0.9)',
+                            padding: '8px 16px',
+                            borderRadius: '8px',
+                            fontSize: '13px',
+                            color: '#8b5cf6',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                        }}>
+                            Suggesting mappings...
+                        </div>
+                    )}
                 </div>
             </div>
             {/* Extracted dialogs */}

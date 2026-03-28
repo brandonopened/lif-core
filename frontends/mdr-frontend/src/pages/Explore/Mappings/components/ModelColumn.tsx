@@ -67,6 +67,7 @@ export interface ModelColumnProps {
     dragTargetPath?: string | null;
     onStartDrag?: (attr: AttributeDTO, entityPath?: string | null) => void;
     onSourceDotDoubleClick?: (attrId: number) => void;
+    onAttributeClick?: (attrId: number, entityPath: string | null, side: 'left' | 'right') => void;
     transformations?: DisplayTransformationDataLike[];
     headerNameNode?: React.ReactNode;
     loading?: boolean;
@@ -97,6 +98,7 @@ const ModelColumn: React.FC<ModelColumnProps> = ({
     dragTargetPath,
     onStartDrag,
     onSourceDotDoubleClick,
+    onAttributeClick,
     transformations = [],
     headerNameNode,
     loading,
@@ -224,7 +226,11 @@ const ModelColumn: React.FC<ModelColumnProps> = ({
                                                     setSelectedWireSourceAttrIds,
                                                 } = selectionContext as any;
                                                 const SrcWireLength = inboundWires?.length || 0;
-                                                if (!SrcWireLength) return;
+                                                if (!SrcWireLength) {
+                                                    // No existing wires — trigger AI suggestions
+                                                    onAttributeClick?.(attr.Id, currentPath || null, 'right');
+                                                    return;
+                                                }
                                                 const inboundTsUnique = Array.from(new Set(inboundWires.map(w => w.trans.Id)));
                                                 // Determine if this is the same target (same attr ID AND same entity path)
                                                 const isSameTarget = selectedTargetAttrId === attr.Id &&
@@ -318,6 +324,16 @@ const ModelColumn: React.FC<ModelColumnProps> = ({
                                 const dotEnd = (
                                     <span
                                         className={`${dotClass} mappings-column__dot--end`}
+                                        onClick={(e) => {
+                                            if (
+                                                side === 'left' &&
+                                                !disableInteractions &&
+                                                onAttributeClick
+                                            ) {
+                                                e.stopPropagation();
+                                                onAttributeClick(attr.Id, node.PathId || null, 'left');
+                                            }
+                                        }}
                                         onDoubleClick={(e) => {
                                             if (
                                                 side === 'left' &&

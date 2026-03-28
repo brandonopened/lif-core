@@ -36,6 +36,9 @@ export interface WiresProps {
   reassignPaths?: Array<{ id: string; d: string }>;
   // New: dashed preview paths while detaching selected wires
   detachPaths?: Array<{ srcAttrId: number; d: string }>;
+  // AI-suggested mapping wires (dashed violet)
+  suggestedPaths?: Array<{ id: string; d: string; srcId: number; tgtId: number; confidence: number }>;
+  onSuggestedWireClick?: (suggestionId: string, e: React.MouseEvent) => void;
   onEmptyClick?: () => void;
 }
 
@@ -50,6 +53,8 @@ const Wires: React.FC<WiresProps> = ({
   dragPath,
   reassignPaths = [],
   detachPaths = [],
+  suggestedPaths = [],
+  onSuggestedWireClick,
   onEmptyClick,
   selectedWireSourceAttrIds,
 }) => {
@@ -96,6 +101,20 @@ const Wires: React.FC<WiresProps> = ({
           />
         );
       })}
+      {suggestedPaths.map((sp) => (
+        <path
+          key={sp.id}
+          d={sp.d}
+          className="mappings-wire mappings-wire--suggested"
+          strokeDasharray="6 4"
+          data-suggestion-id={sp.id}
+          data-confidence={sp.confidence}
+          onClick={(e) => {
+            e.stopPropagation();
+            onSuggestedWireClick?.(sp.id, e);
+          }}
+        />
+      ))}
       {dragPath && (
         <path
           d={dragPath}
