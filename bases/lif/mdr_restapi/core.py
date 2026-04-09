@@ -15,7 +15,6 @@ from lif.mdr_restapi import (
     import_export_endpoints,
     inclusions_endpoints,
     search_endpoint,
-    skills_endpoint,
     suggest_mappings_endpoint,
     transformation_endpoint,
     value_mapping_endpoints,
@@ -480,8 +479,6 @@ app.include_router(generate_jinja_endpoint.router, prefix="/generate_jinja")
 app.include_router(datamodel_constraints_endpoints.router, prefix="/datamodel_constraints")
 
 app.include_router(suggest_mappings_endpoint.router, prefix="/suggest_mappings")
-
-app.include_router(skills_endpoint.router, prefix="/skills")
 
 
 # API Key Management Endpoints
