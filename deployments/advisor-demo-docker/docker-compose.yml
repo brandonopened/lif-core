@@ -470,6 +470,7 @@ services:
       MDR__AUTH__PUBLIC_ALLOWLIST_EXACT: ${MDR__AUTH__PUBLIC_ALLOWLIST_EXACT:-/login,/refresh-token,/health-check}
       MDR__AUTH__PUBLIC_ALLOWLIST_STARTS_WITH: ${MDR__AUTH__PUBLIC_ALLOWLIST_STARTS_WITH:-/docs,/openapi.json}
       LIF_DEMO_USER_PASSWORD: ${LIF_DEMO_USER_PASSWORD:-changeme}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
     ports:
       - "8012:8012"
     networks:
