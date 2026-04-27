@@ -22,7 +22,7 @@ dependencies = [
     "passlib[bcrypt]~=1.7",
     "psycopg2-binary~=2.9",
     "pydantic-settings~=2.1",
-    "pyjwt~=2.10",
+    "pyjwt[crypto]~=2.10",
     "python-jose[cryptography]~=3.3",
     "python-multipart~=0.0",
     "pyyaml~=6.0",
@@ -45,6 +45,7 @@ packages = ["lif"]
 "../../components/lif/mdr_dto" = "lif/mdr_dto"
 "../../components/lif/mdr_services" = "lif/mdr_services"
 "../../components/lif/mdr_utils" = "lif/mdr_utils"
+"../../components/lif/tenant_routing" = "lif/tenant_routing"
 
 # [dev.dependencies]
 # httpx = "^0.26.0"

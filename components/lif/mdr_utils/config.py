@@ -17,8 +17,24 @@ class Settings(BaseSettings):
     mdr__auth__service_api_key__graphql: str = "changeme1"
     mdr__auth__service_api_key__semantic_search: str = "changeme2"
     mdr__auth__service_api_key__translator: str = "changeme3"
+    # Used by the Cognito post-confirmation Lambda to call POST /tenants/provision
+    # when a new user registers (issue #883 PR 4b).
+    mdr__auth__service_api_key__post_confirm: str = "changeme5"
     mdr__auth__public_allowlist_exact: str = "/login,/refresh-token,/health-check"
     mdr__auth__public_allowlist_starts_with: str = "/docs,/openapi.json"
+    # Cognito configuration (empty user_pool_id = Cognito auth disabled)
+    mdr__auth__cognito_user_pool_id: str = ""
+    mdr__auth__cognito_region: str = "us-east-1"
+    mdr__auth__cognito_spa_client_id: str = ""
+    # Tenant routing (issue #883). When enabled, every DB session runs SET
+    # search_path to a tenant_* schema derived from the caller's Cognito
+    # group. Default off — flipped on in each env after the one-time public
+    # → tenant_lif_team data migration (PR 3 of the #883 split).
+    mdr__tenant_routing__enabled: bool = False
+    # Schema for API-key callers (services) and any Cognito user without a
+    # group. Stays "public" until the PR 3 cutover sets this to
+    # "tenant_lif_team" in env params.
+    mdr__tenant_routing__service_schema: str = "public"
 
 
 _settings = Settings()
