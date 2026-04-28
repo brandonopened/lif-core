@@ -514,7 +514,7 @@
   min-width: 200px;
   max-width: 320px;
   font-size: 13px;
-  transform: translate(-50%, -100%) translateY(-8px);
+  /* transform set inline by SuggestionPopover for auto flip + clamp */
 }
 
 .suggestion-popover__header {
