@@ -638,3 +638,44 @@
   justify-content: center;
   z-index: 15; /* ensure above wires (wires at 5, dots at 10) */
 }
+
+/* ---------------------------------------------------------------------------
+   Long data-model names must not blow out the 1fr/auto/1fr grid.
+   Without these, a long source/target name (e.g. an EDUcore spec title) forces
+   its grid track past its share and pushes the Target column off-screen.
+   Let the tracks shrink (min-width:0) and truncate the long names with ellipsis.
+   --------------------------------------------------------------------------- */
+.mappings-cap-left,
+.mappings-cap-right { min-width: 0; }
+
+/* Column cap header (label + model selector) can shrink */
+.mappings-column__header { min-width: 0; max-width: 100%; }
+.mappings-column__header-name { min-width: 0; overflow: hidden; }
+/* the inline-flex wrapper holding the select + EDUcore globe button */
+.mappings-column__header-name > span { min-width: 0; }
+
+/* Truncate the selected model name inside the source/target select triggers */
+.mappings-source-select,
+.mappings-target-select { max-width: 100%; min-width: 0; overflow: hidden; }
+.mappings-source-select > span:first-child,
+.mappings-target-select > span:first-child {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Bound the centered group-header card and truncate its source -> target line */
+.mappings-group-header { max-width: clamp(360px, 30vw, 520px); box-sizing: border-box; }
+.mappings-group-header__name { min-width: 0; }
+.mappings-group-header__row2 { min-width: 0; max-width: 100%; flex-wrap: nowrap; }
+.mappings-group-header__source,
+.mappings-group-header__target {
+  min-width: 0;
+  flex: 0 1 auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.mappings-group-header__arrow { flex: 0 0 auto; }

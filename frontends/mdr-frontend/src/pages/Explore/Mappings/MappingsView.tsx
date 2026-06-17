@@ -59,12 +59,19 @@ import DeleteTransformationsDialog from './components/DeleteTransformationsDialo
 import ExpressionEditorDialog from './components/ExpressionEditorDialog';
 import EditGroupDialog from './components/EditGroupDialog';
 import ImportGroupDialog from './components/ImportGroupDialog';
+import EducoreStandardsDrawer from './components/EducoreStandardsDrawer';
+import EducoreMappingsDrawer from './components/EducoreMappingsDrawer';
+import {
+    loadEducoreMappings,
+    type EducoreMappingPair,
+} from '../../../services/educoreService';
 import ForkGroupDialog from './components/ForkGroupDialog';
 import DetachSourcesDialog from './components/DetachSourcesDialog';
 import BulkTransformationsDialog from './components/BulkTransformationsDialog';
 import { trackEvent } from '../../../utils/analytics';
 import { downloadJsonFile } from '../../../utils/downloadJsonFile';
-import { Pencil2Icon, LayersIcon, UploadIcon, DownloadIcon } from "@radix-ui/react-icons";
+import { toCsv, downloadCsvFile, CsvCell } from '../../../utils/downloadCsvFile';
+import { Pencil2Icon, LayersIcon, UploadIcon, DownloadIcon, GlobeIcon, TableIcon } from "@radix-ui/react-icons";
 import { useToast } from "../../../context/ToastContext";
 import { errorToString } from '../../../utils/errorUtils';
 
@@ -101,6 +108,10 @@ const MappingsView: React.FC = () => {
         number | null
     >(null);
     const [selectedTargetId, setSelectedTargetId] = useState<number | null>(
+        null
+    );
+    // Which side (if any) the EDUcore standards browse drawer is open for
+    const [educoreDrawer, setEducoreDrawer] = useState<null | 'source' | 'target'>(
         null
     );
     const [allGroups, setAllGroups] = useState<TranformationGroupData[] | null>(
@@ -1041,6 +1052,39 @@ const MappingsView: React.FC = () => {
             // Ignored fallback path handled below
         }
     }, [selectedSourceId, allModels, navigate]);
+
+    // "Load EDUcore mappings" pair picker: lists imported spec pairs that have a
+    // canonical MAPS_TO crosswalk; selecting one materializes/opens its group.
+    const [mappingsPickerOpen, setMappingsPickerOpen] = useState(false);
+    const [loadingPairKey, setLoadingPairKey] = useState<string | null>(null);
+
+    const handleSelectMappingPair = useCallback(
+        async (pair: EducoreMappingPair) => {
+            const key = `${pair.sourceDataModelId}-${pair.targetDataModelId}`;
+            setLoadingPairKey(key);
+            try {
+                const result = await loadEducoreMappings(
+                    pair.sourceDataModelId,
+                    pair.targetDataModelId
+                );
+                const msg = result.alreadyExisted
+                    ? `Opened ${result.groupName}.`
+                    : `Loaded ${result.sourcePairsMapped} ${pair.sourceShort} → ${pair.targetShort} mappings (${result.transformationsCreated} transformations).`;
+                showToast(msg, 'success');
+                setMappingsPickerOpen(false);
+                navigate(
+                    `/explore/data-mappings/${result.transformationGroupId}`
+                );
+            } catch (e: any) {
+                // Surface the backend's reason (e.g. nothing resolved).
+                const detail = e?.response?.data?.detail || errorToString(e);
+                showToast(detail, 'error');
+            } finally {
+                setLoadingPairKey(null);
+            }
+        },
+        [navigate, showToast]
+    );
 
     // Global drag for creating a transform
     useEffect(() => {
@@ -2201,6 +2245,117 @@ const MappingsView: React.FC = () => {
         }
     }, [group]);
 
+    // Flatten the group's mappings into one CSV row per source→target wire,
+    // with resolved names/types/descriptions plus machine-readable IDs and
+    // EntityIdPaths so the file can be loaded into another system.
+    const onExportGroupCsv = useCallback(() => {
+        if (!group) return;
+        try {
+            const attrById = new Map<number, AttributeDTO>();
+            const collectAttrs = (model: DataModelWithDetailsWithTree | null) => {
+                model?.Entities?.forEach((ewa) => {
+                    (ewa.Attributes || []).forEach((a) => {
+                        if (!attrById.has(a.Id)) attrById.set(a.Id, a);
+                    });
+                });
+            };
+            collectAttrs(sourceModel);
+            collectAttrs(targetModel);
+            const entityPathNames = (entityIdPath?: string | null) =>
+                extractEntityIds(entityIdPath)
+                    .map((id) => entityByIdRef.current.get(id)?.Name ?? String(id))
+                    .join('.');
+
+            const sourceModelName =
+                group.SourceDataModelName || sourceModel?.DataModel?.Name || '';
+            const targetModelName =
+                group.TargetDataModelName || targetModel?.DataModel?.Name || '';
+
+            const headers = [
+                'source_standard',
+                'source_entity_path',
+                'source_attribute',
+                'source_attribute_unique_name',
+                'source_data_type',
+                'source_description',
+                'target_standard',
+                'target_entity_path',
+                'target_attribute',
+                'target_attribute_unique_name',
+                'target_data_type',
+                'target_description',
+                'expression_language',
+                'expression',
+                'transformation_name',
+                'notes',
+                'transformation_id',
+                'source_attribute_id',
+                'source_entity_id_path',
+                'target_attribute_id',
+                'target_entity_id_path',
+                'group_name',
+                'group_version',
+                'source_model_id',
+                'target_model_id',
+            ];
+            const rows: CsvCell[][] = [];
+            transformations.forEach((t) => {
+                const tgtAttrId = t.TargetAttribute?.AttributeId;
+                const tgtAttr = tgtAttrId ? attrById.get(tgtAttrId) : undefined;
+                const tgtEntityIdPath =
+                    (t.TargetAttribute as any)?.EntityIdPath || '';
+                const srcs: any[] =
+                    Array.isArray(t.SourceAttributes) && t.SourceAttributes.length
+                        ? t.SourceAttributes
+                        : [null];
+                srcs.forEach((s) => {
+                    const srcAttr = s?.AttributeId
+                        ? attrById.get(s.AttributeId)
+                        : undefined;
+                    rows.push([
+                        sourceModelName,
+                        entityPathNames(s?.EntityIdPath),
+                        srcAttr?.Name ?? '',
+                        srcAttr?.UniqueName ?? '',
+                        srcAttr?.DataType ?? '',
+                        srcAttr?.Description ?? '',
+                        targetModelName,
+                        entityPathNames(tgtEntityIdPath),
+                        tgtAttr?.Name ?? (t.TargetAttribute as any)?.AttributeName ?? '',
+                        tgtAttr?.UniqueName ?? '',
+                        tgtAttr?.DataType ?? '',
+                        tgtAttr?.Description ?? '',
+                        t.ExpressionLanguage ?? '',
+                        t.Expression ?? '',
+                        t.Name ?? '',
+                        t.Notes ?? '',
+                        t.Id,
+                        s?.AttributeId ?? '',
+                        s?.EntityIdPath ?? '',
+                        tgtAttrId ?? '',
+                        tgtEntityIdPath,
+                        group.Name ?? '',
+                        group.GroupVersion ?? '',
+                        group.SourceDataModelId,
+                        group.TargetDataModelId,
+                    ]);
+                });
+            });
+            if (!rows.length) {
+                showToast('No mappings to export', 'error');
+                return;
+            }
+            const base =
+                (group.Name || `${sourceModelName}_${targetModelName}`).trim() ||
+                'mappings';
+            const filename = `${base}_v${group.GroupVersion}_mappings.csv`;
+            downloadCsvFile(toCsv(headers, rows), filename);
+            showToast(`${filename} downloaded successfully`, 'success');
+        } catch (e) {
+            showToast(errorToString(e), 'error');
+        }
+    }, [group, transformations, sourceModel, targetModel, showToast]);
+
     /** Add dynamic keyboard listener for trigger wire deletion */
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -2334,11 +2489,12 @@ const MappingsView: React.FC = () => {
                                 ? countGroupsForSource(selected.Id)
                                 : 0;
                             return (
+                              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
                                 <RdxSelect.Root
                                     value={
                                         selectedSourceId != null
                                             ? String(selectedSourceId)
-                                            : undefined
+                                            : ''
                                     }
                                     onValueChange={(v) =>
                                         onChangeSourceModel(Number(v))
@@ -2378,6 +2534,16 @@ const MappingsView: React.FC = () => {
                                         })}
                                     </RdxSelect.Content>
                                 </RdxSelect.Root>
+                                <button
+                                    type="button"
+                                    className="educore-browse-btn"
+                                    title="Browse EDUcore standards"
+                                    aria-label="Browse EDUcore standards"
+                                    onClick={() => setEducoreDrawer('source')}
+                                >
+                                    <GlobeIcon />
+                                </button>
+                              </span>
                             );
                         })()}
                     />
@@ -2407,6 +2573,9 @@ const MappingsView: React.FC = () => {
                                 <button type="button" className="mappings-icon-btn" title="Export transformation group" onClick={onExportGroup}>
                                     <DownloadIcon />
                                 </button>
+                                <button type="button" className="mappings-icon-btn" title="Export mappings as CSV" onClick={onExportGroupCsv}>
+                                    <TableIcon />
+                                </button>
                                 {/* <button type="button" className="mappings-icon-btn" title="Import transformation group" onClick={() => setImportDialogOpen(true)}>
                                     <UploadIcon />
                                 </button> */}
@@ -2415,6 +2584,9 @@ const MappingsView: React.FC = () => {
                                 </button>
                                 <button type="button" className="mappings-icon-btn" title="Bulk edit transformations" onClick={() => setBulkDialogOpen(true)}>
                                     <LayersIcon />
+                                </button>
+                                <button type="button" className="mappings-icon-btn" title="Load EDUcore mappings (canonical MAPS_TO pairs)" onClick={() => setMappingsPickerOpen(true)}>
+                                    ✦
                                 </button>
                             </div>
                         </div>
@@ -2612,6 +2784,14 @@ const MappingsView: React.FC = () => {
                             >
                                 + Create
                             </button>
+                            <button
+                                type="button"
+                                className="mappings-fork-btn"
+                                title="Browse EDUcore standard pairs that have canonical (MAPS_TO) mappings ready to load"
+                                onClick={() => setMappingsPickerOpen(true)}
+                            >
+                                ✦ Load EDUcore mappings
+                            </button>
                         </div>
                     </div>
                 )}
@@ -2629,11 +2809,12 @@ const MappingsView: React.FC = () => {
                                 ? countGroupsForTarget(selected.Id)
                                 : 0;
                             return (
+                              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
                                 <RdxSelect.Root
                                     value={
                                         selectedTargetId != null
                                             ? String(selectedTargetId)
-                                            : undefined
+                                            : ''
                                     }
                                     onValueChange={(v) =>
                                         onChangeTargetModel(Number(v))
@@ -2668,6 +2849,16 @@ const MappingsView: React.FC = () => {
                                         })}
                                     </RdxSelect.Content>
                                 </RdxSelect.Root>
+                                <button
+                                    type="button"
+                                    className="educore-browse-btn"
+                                    title="Browse EDUcore standards"
+                                    aria-label="Browse EDUcore standards"
+                                    onClick={() => setEducoreDrawer('target')}
+                                >
+                                    <GlobeIcon />
+                                </button>
+                              </span>
                             );
                         })()}
                     />
@@ -2934,6 +3125,25 @@ const MappingsView: React.FC = () => {
                     try { fetchTransformations(); }
                     finally { setImportDialogOpen(false); }
                 }}
+            />
+            <EducoreStandardsDrawer
+                open={!!educoreDrawer}
+                side={educoreDrawer ?? 'source'}
+                onOpenChange={(o) => !o && setEducoreDrawer(null)}
+                onSelect={(id) => {
+                    if (educoreDrawer === 'target') {
+                        onChangeTargetModel(id);
+                    } else {
+                        onChangeSourceModel(id);
+                    }
+                    setEducoreDrawer(null);
+                }}
+            />
+            <EducoreMappingsDrawer
+                open={mappingsPickerOpen}
+                onOpenChange={setMappingsPickerOpen}
+                onSelect={handleSelectMappingPair}
+                loadingPairKey={loadingPairKey}
             />
             <ForkGroupDialog
                 open={forkDialogOpen}
