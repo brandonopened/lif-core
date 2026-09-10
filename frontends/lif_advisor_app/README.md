@@ -63,3 +63,13 @@ This runs the application and automatically refreshes the browser as you change 
     ```
 
 The web application can then be accessed at http://localhost:5174
+
+### Vercel
+
+The app is a static Vite build, so it deploys to Vercel as-is. `vercel.json` in this directory carries the
+build settings and the single-page-app rewrite that `nginx.conf` provides in the Docker image. Import the
+repository into a Vercel project, set **Root Directory** to `frontends/lif_advisor_app`, and set the
+build-time variables listed in `.env.example` under **Settings > Environment Variables**:
+`VITE_LIF_ADVISOR_API_URL` must point at a publicly reachable Advisor API, and `VITE_GA_MEASUREMENT_ID` is
+optional. Vite inlines these at build time, so redeploy after changing one. The Advisor API must allow the
+Vercel origin in its CORS settings.

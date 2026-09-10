@@ -48,3 +48,28 @@ npm install
 export VITE_API_URL=http://localhost:8099
 npm run dev
 ```
+
+# Deploying to Vercel
+
+The app is a static Vite build, so it deploys to Vercel as-is. `vercel.json` in this directory carries the
+build settings and the single-page-app rewrite that `nginx.conf` provides in the Docker image (every path
+serves `index.html`, so client-side routes such as `/explore/data-mappings/38` and `/auth/callback` survive a
+hard refresh). The Docker image and the S3 + CloudFront deploy in `.github/workflows/lif_mdr_frontend.yml`
+are unchanged.
+
+1. Import the repository into a Vercel project and set **Root Directory** to `frontends/mdr-frontend`
+   (Vercel does not read a monorepo subdirectory otherwise). The framework, install, build and output
+   settings come from `vercel.json`.
+2. Set the build-time environment variables listed in `.env.example` under **Settings > Environment
+   Variables**. `VITE_API_URL` must point at a publicly reachable MDR API, for example the dev environment's
+   `https://mdr-api.dev.<domain>`; a `localhost` value only works for local development. `VITE_LDE_API_URL` is
+   needed only for the Export Playground page. Vite inlines these at build time, so redeploy after changing one.
+3. Register the Vercel origin with Cognito, or leave `VITE_COGNITO_DOMAIN` and `VITE_COGNITO_CLIENT_ID`
+   empty to fall back to the legacy username/password login. With Cognito on, the SPA app client must list
+   `https://<your-vercel-domain>/auth/callback` as a callback URL and `https://<your-vercel-domain>/login` as
+   a sign-out URL (`src/config/auth.ts` derives both from `window.location.origin`). Preview deployments get a
+   new origin per deployment, so use a fixed production domain for Cognito or keep Cognito off on previews.
+4. Confirm the MDR API allows the Vercel origin. The API's `cors_allow_origins` setting defaults to `*`; if a
+   deployment narrows it, add the Vercel domain (`components/lif/mdr_utils/config.py`).
+
+To try the production build locally: `npm ci && npm run build`, then `npx vite preview`.
