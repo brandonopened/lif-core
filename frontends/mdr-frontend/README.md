@@ -61,15 +61,19 @@ are unchanged.
    (Vercel does not read a monorepo subdirectory otherwise). The framework, install, build and output
    settings come from `vercel.json`.
 2. Set the build-time environment variables listed in `.env.example` under **Settings > Environment
-   Variables**. `VITE_API_URL` must point at a publicly reachable MDR API, for example the dev environment's
-   `https://mdr-api.dev.<domain>`; a `localhost` value only works for local development. `VITE_LDE_API_URL` is
-   needed only for the Export Playground page. Vite inlines these at build time, so redeploy after changing one.
+   Variables**. Use `VITE_API_URL=/api` and `VITE_LDE_API_URL=/lde`: `vercel.json` rewrites those two path
+   prefixes to the dev MDR API and dev LDE server-side, so the browser's requests stay same-origin and the dev
+   API's CORS allow-list (which does not include the Vercel domain) never comes into play. Pointing
+   `VITE_API_URL` straight at `https://mdr-api.dev.<domain>` fails the CORS preflight from a Vercel origin.
+   To target another environment, change the two rewrite destinations. `VITE_LDE_API_URL` is needed only for
+   the Export Playground page. Vite inlines these at build time, so redeploy after changing one.
 3. Register the Vercel origin with Cognito, or leave `VITE_COGNITO_DOMAIN` and `VITE_COGNITO_CLIENT_ID`
    empty to fall back to the legacy username/password login. With Cognito on, the SPA app client must list
    `https://<your-vercel-domain>/auth/callback` as a callback URL and `https://<your-vercel-domain>/login` as
    a sign-out URL (`src/config/auth.ts` derives both from `window.location.origin`). Preview deployments get a
    new origin per deployment, so use a fixed production domain for Cognito or keep Cognito off on previews.
-4. Confirm the MDR API allows the Vercel origin. The API's `cors_allow_origins` setting defaults to `*`; if a
-   deployment narrows it, add the Vercel domain (`components/lif/mdr_utils/config.py`).
+4. If you bypass the proxy and call an MDR API directly, that API must allow the Vercel origin: its
+   `cors_allow_origins` setting defaults to `*`, but dev narrows it to its own frontend domain
+   (`components/lif/mdr_utils/config.py`, `CORS_ALLOW_ORIGINS` in the ECS task definition).
 
 To try the production build locally: `npm ci && npm run build`, then `npx vite preview`.
