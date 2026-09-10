@@ -36,6 +36,9 @@ Utility scripts for managing deployments, credentials, and data. AWS scripts req
 |--------|---------|
 | `reset-mdr-database.sh` | **Destructive.** Wipes and recreates the MDR database via Flyway clean + migrate. Required when `V1.1__metadata_repository_init.sql` is replaced rather than versioned incrementally. |
 | `provision-mdr-tenant.sh` | Create a `tenant_{name}` PostgreSQL schema by cloning DDL (and optionally data) from `public`. Supports MDR self-serve multi-tenancy (issue #883). Uses libpq env vars (`PG*`) for connectivity — caller manages network access. |
+| `exchange-demo.sh` | Drive the district ↔ college schema-exchange demo against the local compose stack (`docker-compose.exchange.yml`): publish, pull a peer's data-model bundle with the read-only partner key, receive it, draft a crosswalk with `generate-crosswalk-draft.py`, receive that, translate a sample record. Needs `EXCHANGE_PARTNER_KEY`; `--reverse`, `--dry-run`. Local-stack only (no `--apply`). See `docs/design/cross-cutting/schema-exchange.md`. |
+| `generate-crosswalk-draft.py` | Draft a transformation-group bundle between two MDR models (OpenAPI exports or data-model bundles): identity matches, an optional EDUcore crosswalk (`--crosswalk`), and optional LIF-authored rules from an exported group (`--authored`, tag via `--authored-label`). Output is importable through `POST /exchange/receive`; every rule's `Alignment` records its provenance. |
+| `show-crosswalk.py` | Print an MDR transformation group as a `source -> target [alignment]` crosswalk table, or `--list` the groups. Reads the same export the MDR UI downloads; `--mdr-url` / `--api-key` (or `MDR_URL` / `MDR_API_KEY`) pick the MDR, default `http://localhost:8012` / the local graphql service key. Schema-level metadata only, no learner data. |
 
 ## Demo Release
 

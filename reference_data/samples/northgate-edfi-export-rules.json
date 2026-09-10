@@ -1,0 +1,71 @@
+{
+  "_comment": "Demo-local LIF-authored rules for the EXPORT direction, StateU LIF -> Northgate Ed-Fi v5, covering the Student identity elements the Ed-Fi Data Standard defines (checked against the EDUcore Ed-Fi graph). Same shape as an exported MDR transformation group so scripts/generate-crosswalk-draft.py accepts it via --authored; pass it BEFORE the reference StateU-LIF_Ed-Fi-v5 file so these rows win contested targets. The reference file's Student.Name and Student.UniqueId rules drop out once scripts/align-edfi-student-model.py has retired those attributes. StateU LIF's Person.Name profile carries firstName and lastName only, so there is no MiddleName rule. Numeric EntityIdPath prefixes are ignored; resolution is by UniqueName.",
+  "Name": "Northgate Ed-Fi v5 export rules",
+  "GroupVersion": "1.0",
+  "Transformations": [
+    {
+      "Name": "Student.FirstName",
+      "Expression": "{ \"Student\": Person. { \"FirstName\": Name.firstName } }",
+      "ExpressionLanguage": "JSONata",
+      "Notes": "Direct copy of LIF Person.Name.firstName into the Ed-Fi Student.FirstName element. Replaces the reference rule that concatenated first and last name into a single Student.Name string, which Ed-Fi does not have.",
+      "SourceAttributes": [
+        {
+          "EntityIdPath": "0:Person,0:Person.Name,0:~Person.Name.firstName"
+        }
+      ],
+      "TargetAttribute": {
+        "EntityIdPath": "0:Student,0:~Student.FirstName"
+      }
+    },
+    {
+      "Name": "Student.LastSurname",
+      "Expression": "{ \"Student\": Person. { \"LastSurname\": Name.lastName } }",
+      "ExpressionLanguage": "JSONata",
+      "Notes": "Direct copy of LIF Person.Name.lastName into the Ed-Fi Student.LastSurname element. A LIF record with several Name entries exports the sequence of surnames; Ed-Fi expects one.",
+      "SourceAttributes": [
+        {
+          "EntityIdPath": "0:Person,0:Person.Name,0:~Person.Name.lastName"
+        }
+      ],
+      "TargetAttribute": {
+        "EntityIdPath": "0:Student,0:~Student.LastSurname"
+      }
+    },
+    {
+      "Name": "Student.StudentUniqueId",
+      "Expression": "{ \"Student\": Person. { \"StudentUniqueId\": ($school := Identifier[identifierType = \"SCHOOL_ASSIGNED_NUMBER\"]; $school ? $school[0].identifier : Identifier[0].identifier) } }",
+      "ExpressionLanguage": "JSONata",
+      "Notes": "2:1 rule. Ed-Fi StudentUniqueId is ONE code, so this selects the LIF identifier whose identifierType is SCHOOL_ASSIGNED_NUMBER and falls back to the first identifier. Replaces the reference Student.UniqueId rule, which copied every identifier and lost its pairing with identifierType.",
+      "SourceAttributes": [
+        {
+          "EntityIdPath": "0:Person,0:Common.Identifier,0:~Common.Identifier.identifier"
+        },
+        {
+          "EntityIdPath": "0:Person,0:Common.Identifier,0:~Common.Identifier.identifierType"
+        }
+      ],
+      "TargetAttribute": {
+        "EntityIdPath": "0:Student,0:~Student.StudentUniqueId"
+      }
+    },
+    {
+      "Name": "StudentIdentificationCode.StudentIdentificationSystem",
+      "Expression": "{ \"StudentIdentificationCode\": Person.Identifier.{ \"IdentificationCode\": identifier, \"StudentIdentificationSystem\": ($system := $lookup({\"SCHOOL_ASSIGNED_NUMBER\": \"School\", \"DISTRICT_ASSIGNED_NUMBER\": \"District\", \"STATE_ASSIGNED_NUMBER\": \"State\", \"SSN\": \"SSN\"}, identifierType); $system ? $system : \"Other\"), \"AssigningOrganizationIdentificationCode\": informationSourceOrganization } }",
+      "ExpressionLanguage": "JSONata",
+      "Notes": "Entity-level (paired) rule. Each LIF Person.Identifier row becomes one Ed-Fi StudentIdentificationCode object so IdentificationCode stays paired with its system: the two reference rules that copied identifier and identifierType independently produced parallel arrays whose only link was position. StudentIdentificationSystem is mapped onto Ed-Fi's StudentIdentificationSystemDescriptor values (School, District, State, SSN, Federal, Family, Local, Other, ... per EDUcore); unmapped LIF types become Other. AssigningOrganizationIdentificationCode takes the Identifier row's informationSourceOrganization, an approximation of the assigning organization; that leg is not listed under SourceAttributes because its UniqueName (Common.informationSourceOrganization) is shared by every LIF entity and cannot be pinned to Identifier by name. The rule anchors on StudentIdentificationSystem so it wins the target over the reference copy.",
+      "SourceAttributes": [
+        {
+          "EntityIdPath": "0:Person,0:Common.Identifier,0:~Common.Identifier.identifier",
+          "Notes": "Becomes IdentificationCode."
+        },
+        {
+          "EntityIdPath": "0:Person,0:Common.Identifier,0:~Common.Identifier.identifierType",
+          "Notes": "Mapped to the Ed-Fi descriptor value; unknown types become Other."
+        }
+      ],
+      "TargetAttribute": {
+        "EntityIdPath": "0:StudentIdentificationCode,0:~StudentIdentificationCode.StudentIdentificationSystem"
+      }
+    }
+  ]
+}

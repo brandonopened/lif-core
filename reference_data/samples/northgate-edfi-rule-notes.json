@@ -1,0 +1,39 @@
+{
+  "_comment": "Transformation notes for the Northgate Ed-Fi v5 -> Riverbend CC LIF draft, keyed by rule Name (the target path). Applied by scripts/generate-crosswalk-draft.py --notes so the notes travel inside the exchange bundle and land in the MDR's Notes fields. A string value is the rule's Notes; an object may carry Notes, SourceAttributeNotes (keyed by source UniqueName) and TargetAttributeNotes. Authored rules take the note as-is; generated rows (identity / EDUcore) keep their provenance text and get the note appended. Rules already carrying Notes in northgate-edfi-name-rules.json are not listed. Facts about Ed-Fi elements refer to the Ed-Fi Data Standard v5 Unified Data Model.",
+  "Assessment.identifier": "Direct copy of the Ed-Fi AssessmentIdentifier (the assessment's own identifier, assigned by its owner). Produces a standalone Assessment object rather than part of Person.",
+  "Course.Identifier.identifier": "REVIEW. Target resolved by UniqueName to the shared Identifier entity under Course, but the expression writes Person.Identifier, and the source is the identification *system* (StudentIdentificationSystem, e.g. District), not the code value (IdentificationCode). Inherited from the reference Ed-Fi rules; likely wrong on both ends.",
+  "Course.Identifier.identifierVerification": "REVIEW. Same UniqueName ambiguity as Identifier.identifier: the expression writes Person.Identifier. The source, Ed-Fi PersonalInformationVerification (how the person's identity was verified), is a reasonable semantic match for identifierVerification once the target is fixed.",
+  "Course.courseBeginDate": "Session dates stand in for course dates: Ed-Fi carries BeginDate/EndDate on the Session (term), not on Course. Exact for a single-session record; with several sessions the translator's merge keeps one.",
+  "Course.courseEndDate": "Session dates stand in for course dates: Ed-Fi carries BeginDate/EndDate on the Session (term), not on Course. Exact for a single-session record; with several sessions the translator's merge keeps one.",
+  "Course.identifier": {
+    "Notes": "Ed-Fi CourseCode (the district-assigned code, e.g. MATH-301) becomes the LIF course identifier, nested under Person.CourseLearningExperience so the course rides with the learner. Known limit: more than one Ed-Fi Course row makes the translator emit a list-valued Person and drop sibling fields.",
+    "SourceAttributeNotes": {
+      "Course.CourseCode": "Unique only within the education organization that assigned it; not a state or CIP code."
+    }
+  },
+  "Course.name": "Direct copy of Ed-Fi CourseTitle into the nested Person.CourseLearningExperience.Course. Same multi-row limit as Course.identifier.",
+  "Person.Contact.Address.addressCity": "Direct copy of Ed-Fi Address.City.",
+  "Person.Contact.Address.addressCountyName": "Direct copy of Ed-Fi Address.NameOfCounty. Ed-Fi also carries CountyFIPSCode; its LIF target (Person.Residency.countyFIPSCode) is not in Riverbend's profile, so the code is dropped.",
+  "Person.Contact.Address.addressLine2": "Ed-Fi splits the second address line into ApartmentRoomSuiteNumber and BuildingSiteNumber; only ApartmentRoomSuiteNumber is carried, BuildingSiteNumber is dropped.",
+  "Person.Contact.Address.addressPostalCode": "Direct copy. Ed-Fi PostalCode is a string, so ZIP+4 values pass through unchanged.",
+  "Person.Contact.Address.addressState": "Ed-Fi carries the two-letter USPS abbreviation (StateAbbreviationDescriptor) while Riverbend's profile expects the full state name, so the EDUcore-derived lookup expands GA -> Georgia. Abbreviations missing from the lookup become null rather than passing through.",
+  "Person.Contact.Address.addressStreet": "Direct copy. Ed-Fi StreetNumberName is the combined house number and street name, which is what LIF addressStreet holds.",
+  "Person.Contact.Address.addressType": "Ed-Fi AddressTypeDescriptor values (e.g. Home, Mailing, Physical) copied verbatim; no value lookup because addressType has no controlled list in Riverbend's profile.",
+  "Person.Contact.Address.dateEffective": "REVIEW. Ed-Fi Address.Period is a complex element (BeginDate/EndDate), not a date; this rule copies the whole object. Should read Period.BeginDate. Inherited from the reference Ed-Fi rules.",
+  "Person.Contact.Address.dateExpired": "REVIEW. Ed-Fi Address.Period is a complex element (BeginDate/EndDate), not a date; this rule copies the whole object. Should read Period.EndDate. Inherited from the reference Ed-Fi rules.",
+  "Person.Contact.Address.latitude": "Direct copy of Ed-Fi Address.Latitude, a string in the Ed-Fi model; no numeric conversion.",
+  "Person.Contact.Address.longitude": "Direct copy of Ed-Fi Address.Longitude, a string in the Ed-Fi model; no numeric conversion.",
+  "Person.Contact.Email.emailAddress": "Direct copy of Ed-Fi ElectronicMailAddress.",
+  "Person.Contact.Email.emailAddressType": "Ed-Fi ElectronicMailTypeDescriptor values (e.g. Home/Personal, Work, Organization) copied verbatim; no value lookup.",
+  "Person.Contact.Email.primaryEmailAddressIndicator": "Direct copy of the Ed-Fi boolean.",
+  "Person.Contact.Telephone.doNotPublishIndicator": "Direct copy of the Ed-Fi boolean.",
+  "Person.Contact.Telephone.orderOfPriority": "Direct copy of the Ed-Fi integer ranking among the person's telephone numbers.",
+  "Person.Contact.Telephone.telephoneNumber": "Direct copy. Ed-Fi TelephoneNumber is free-format text; dashes, spaces and country codes are not normalized.",
+  "Person.Contact.Telephone.telephoneNumberType": "Ed-Fi TelephoneNumberTypeDescriptor values (e.g. Home, Mobile, Work) copied verbatim; no value lookup.",
+  "Person.Contact.Telephone.textMessageCapabilityIndicator": "Direct copy of the Ed-Fi boolean.",
+  "Person.Name.initials": {
+    "SourceAttributeNotes": {
+      "Student.MiddleName": "Optional in Ed-Fi; when absent the initials collapse to two letters."
+    }
+  }
+}

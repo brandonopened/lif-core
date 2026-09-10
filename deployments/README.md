@@ -17,6 +17,7 @@ In a Polylith-based architecture, all core logic resides in modular components. 
 deployments/  
 ├── advisor-demo-docker/   # Local docker-compose deployment of the full LIF stack
 │ ├── docker-compose.yml
+│ ├── docker-compose.exchange.yml      # override: adds a second (college) MDR + translator for the schema-exchange demo
 │ ├── information_sources_config*.yml  # per-org orchestrator config
 │ └── volumes/                          # per-org query-planner state
 </code> </pre>

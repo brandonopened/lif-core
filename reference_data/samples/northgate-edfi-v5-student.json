@@ -1,0 +1,47 @@
+{
+  "_comment": "Fictional Northgate High School student in the shape of the MDR 'Ed-Fi v5' data model (entities as loaded in projects/lif_mdr_database/backup.sql) plus the real Ed-Fi Student identity elements StudentUniqueId / FirstName / MiddleName / LastSurname, which scripts/align-edfi-student-model.py adds to the published model (the seed has a single Student.Name string and a UniqueId, which Ed-Fi does not). Used by the schema-exchange demo to translate an Ed-Fi record into a college LIF model. Values exercise the EDUcore value crosswalk (GA -> Georgia) and the 3:1 initials rule in reference_data/samples/northgate-edfi-name-rules.json. One Course on purpose: the reference Ed-Fi rules map `Course.` to the Person root, so a multi-row Course makes JSONata emit a list-valued Person fragment and the translator's merge drops sibling fields (observed 2026-09-08).",
+  "Student": {
+    "StudentUniqueId": "604822",
+    "FirstName": "Jordan",
+    "MiddleName": "Alexis",
+    "LastSurname": "Rivera"
+  },
+  "Address": [
+    {
+      "StreetNumberName": "410 Pine Street",
+      "City": "Marietta",
+      "StateAbbreviation": "GA",
+      "PostalCode": "30060"
+    }
+  ],
+  "ElectronicMail": [
+    {
+      "ElectronicMailAddress": "jrivera@northgate.k12.ga.us"
+    }
+  ],
+  "Telephone": [
+    {
+      "TelephoneNumber": "770-555-0142"
+    }
+  ],
+  "BirthData": {
+    "BirthDate": "2008-03-14"
+  },
+  "Course": [
+    {
+      "CourseCode": "MATH-301",
+      "CourseTitle": "Algebra II",
+      "OfferedGradeLevel": "Eleventh grade"
+    }
+  ],
+  "Session": {
+    "BeginDate": "2025-08-11",
+    "EndDate": "2025-12-19"
+  },
+  "Credits": {
+    "CreditType": "Carnegie unit"
+  },
+  "Contact": {
+    "LevelOfEducation": "Bachelor's"
+  }
+}

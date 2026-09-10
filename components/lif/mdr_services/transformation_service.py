@@ -26,6 +26,7 @@ from lif.mdr_dto.transformation_group_dto import (
     CreateTransformationGroupDTO,
     DataModelRefDTO,
     ImportTransformationAttributeDTO,
+    ImportTransformationDTO,
     ImportTransformationGroupRequestDTO,
     ImportTransformationGroupResultDTO,
     TransformationGroupDTO,
@@ -1779,6 +1780,64 @@ async def import_transformation_group(
         commit=False,
     )
 
+    imported_count, skipped_transformations, had_path_non_match = await import_transformations_into_group(
+        session=session,
+        group_id=new_group.Id,
+        source_data_model=source_data_model,
+        target_data_model=target_data_model,
+        transformations=data.Transformations or [],
+    )
+
+    if had_path_non_match and not allow_missing_paths:
+        # Fail the call and do NOT make any changes.
+        await session.rollback()
+        return ImportTransformationGroupResultDTO(
+            Success=False,
+            TransformationGroupId=None,
+            ImportedTransformationCount=0,
+            SkippedTransformationCount=len(skipped_transformations),
+            SkippedTransformations=skipped_transformations,
+        )
+
+    if imported_count == 0:
+        # Nothing was imported, so no group is created (mirrors the export side, which refuses to
+        # emit an empty group). Reached when the file has no JSONata transformations or when every
+        # transformation was skipped for missing paths under allowMissingPaths=true. Reported as a
+        # 200 Success=false result (not an HTTP error) so callers can handle every non-success the
+        # same way — the counts and SkippedTransformations carry the verdict. No changes are made.
+        await session.rollback()
+        return ImportTransformationGroupResultDTO(
+            Success=False,
+            TransformationGroupId=None,
+            ImportedTransformationCount=0,
+            SkippedTransformationCount=len(skipped_transformations),
+            SkippedTransformations=skipped_transformations,
+        )
+
+    await session.commit()
+    return ImportTransformationGroupResultDTO(
+        Success=True,
+        TransformationGroupId=new_group.Id,
+        ImportedTransformationCount=imported_count,
+        SkippedTransformationCount=len(skipped_transformations),
+        SkippedTransformations=skipped_transformations,
+    )
+
+
+async def import_transformations_into_group(
+    session: AsyncSession,
+    group_id: int,
+    source_data_model: DataModel,
+    target_data_model: DataModel,
+    transformations: List[ImportTransformationDTO],
+) -> tuple[int, List[TransformationImportSkipDTO], bool]:
+    """Stage portable transformations into an existing group without committing.
+
+    Shared by the group import (#772) and the schema-exchange receive so both apply identical
+    path-resolution and skip rules. Returns ``(imported_count, skipped_transformations,
+    had_path_non_match)``; the caller owns the transaction boundary and decides whether a path
+    non-match aborts.
+    """
     # Every non-applied transformation lands in one flat list (the unit is always a whole
     # transformation, never a single path). `had_path_non_match` tracks path failures separately so
     # they alone gate the allowMissingPaths abort — out-of-scope skips (non-JSONata / empty) never do.
@@ -1786,7 +1845,7 @@ async def import_transformation_group(
     had_path_non_match = False
     imported_count = 0
 
-    for transformation in data.Transformations or []:
+    for transformation in transformations:
         # Out of scope for portable import: silently-ignored on export, warned-and-skipped here. Also
         # surfaced in the response (SkippedTransformations) so a UI can explain why nothing landed,
         # rather than leaving the only trace in the server log.
@@ -1854,7 +1913,7 @@ async def import_transformation_group(
         await create_transformation(
             session=session,
             data=CreateTransformationDTO(
-                TransformationGroupId=new_group.Id,
+                TransformationGroupId=group_id,
                 Name=transformation.Name,
                 Expression=transformation.Expression,
                 ExpressionLanguage=transformation.ExpressionLanguage,
@@ -1872,37 +1931,4 @@ async def import_transformation_group(
         )
         imported_count += 1
 
-    if had_path_non_match and not allow_missing_paths:
-        # Fail the call and do NOT make any changes.
-        await session.rollback()
-        return ImportTransformationGroupResultDTO(
-            Success=False,
-            TransformationGroupId=None,
-            ImportedTransformationCount=0,
-            SkippedTransformationCount=len(skipped_transformations),
-            SkippedTransformations=skipped_transformations,
-        )
-
-    if imported_count == 0:
-        # Nothing was imported, so no group is created (mirrors the export side, which refuses to
-        # emit an empty group). Reached when the file has no JSONata transformations or when every
-        # transformation was skipped for missing paths under allowMissingPaths=true. Reported as a
-        # 200 Success=false result (not an HTTP error) so callers can handle every non-success the
-        # same way — the counts and SkippedTransformations carry the verdict. No changes are made.
-        await session.rollback()
-        return ImportTransformationGroupResultDTO(
-            Success=False,
-            TransformationGroupId=None,
-            ImportedTransformationCount=0,
-            SkippedTransformationCount=len(skipped_transformations),
-            SkippedTransformations=skipped_transformations,
-        )
-
-    await session.commit()
-    return ImportTransformationGroupResultDTO(
-        Success=True,
-        TransformationGroupId=new_group.Id,
-        ImportedTransformationCount=imported_count,
-        SkippedTransformationCount=len(skipped_transformations),
-        SkippedTransformations=skipped_transformations,
-    )
+    return imported_count, skipped_transformations, had_path_non_match

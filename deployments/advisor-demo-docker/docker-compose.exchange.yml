@@ -1,0 +1,161 @@
+# Schema-exchange demo override: adds a COLLEGE side (MDR Postgres + restore +
+# MDR API + Translator) next to the existing stack, which plays the DISTRICT.
+# See docs/design/cross-cutting/schema-exchange.md.
+#
+# The district side is the unchanged lif-mdr-database / lif-mdr-api /
+# lif-translator-org1 from docker-compose.yml. Its publisher name comes from
+# MDR__EXCHANGE__PUBLISHER_NAME on lif-mdr-api (default "Lakeside Unified School
+# District"); the college's from MDR__EXCHANGE__PUBLISHER_NAME_COLLEGE below.
+# Both MDRs register the SAME partner key (MDR__AUTH__SERVICE_API_KEY__EXCHANGE_PARTNER),
+# so one key pulls in either direction.
+#
+# .env must define:
+#   LIF_DEMO_USER_PASSWORD=...                       (required by every MDR API, see #1191)
+#   MDR__AUTH__SERVICE_API_KEY__EXCHANGE_PARTNER=... (read-only key confined to GET /exchange/*)
+#
+# Bring up only what the demo needs (run from this directory):
+#   docker compose -f docker-compose.yml -f docker-compose.exchange.yml up -d \
+#     lif-mdr-database lif-mdr-database-restore lif-mdr-api lif-translator-org1 \
+#     lif-mdr-database-college lif-mdr-database-restore-college lif-mdr-api-college lif-translator-college
+#
+# Then drive it with scripts/exchange-demo.sh (see scripts/README.md).
+#
+# To also view exports in the MDR app's Export Playground (http://localhost:5173/export-playground),
+# add the Learner Data Export API and its org1 query chain (mongodb-org1, lif-query-cache-org1,
+# lif-query-planner-org1 come in via depends_on) plus the app itself:
+#   docker compose -f docker-compose.yml -f docker-compose.exchange.yml up -d #     lif-learner-data-export-api lif-mdr-app
+# LDE lists every transformation group whose source is StateU LIF (id 17) as an export format, so a
+# received "Riverbend CC LIF" draft shows up there automatically.
+# Windows checkouts: the entrypoint scripts copied into the mongodb and query-planner images must be
+# LF, or those containers exit/skip seeding (`sed -i 's/\r$//' projects/mongodb/entrypoint.sh
+# projects/lif_query_planner_api/entrypoint.sh`). mongodb only seeds on a fresh anonymous volume:
+# `up -d -V --force-recreate mongodb-org1` after fixing the script.
+#
+# Without Dagster the planner falls back to the seeded cache (and logs an orchestrator error). To run
+# real fetches, also start the orchestrator + Dagster and the org2/org3 sources the org1 query plan
+# names (otherwise each run retries unreachable hosts for ~20s and the export's 30s planner timeout,
+# QUERY_PLANNER_CLIENT_TIMEOUT_SECONDS, trips):
+#   docker compose -f docker-compose.yml -f docker-compose.exchange.yml up -d #     lif-orchestrator-api-org1 dagster-webserver dagster-daemon lif-example-data-source-rest-api #     lif-graphql-api-org2 lif-graphql-api-org3
+# projects/dagster_docker_compose/code_location_entrypoint.sh has the same CRLF caveat as above.
+#
+# Host ports: district MDR 8012 / Postgres 5445 / translator 8007;
+#             college  MDR 8022 / Postgres 5446 / translator 8017 / MDR app 5174 (lif-mdr-app-college).
+#
+# YAML anchors do not cross compose files, so the build blocks below repeat
+# the ones in docker-compose.yml rather than referencing them.
+
+services:
+  lif-mdr-database-college:
+    image: postgres
+    command: postgres
+    environment:
+      POSTGRES_USER: ${LIF_MDR__DATABASE__USER:-postgres}
+      POSTGRES_PASSWORD: ${LIF_MDR__DATABASE__PASSWORD:-postgres}
+      POSTGRES_DB: ${LIF_MDR__DATABASE__DBNAME:-LIF}
+      POSTGRES_HOST: localhost
+      POSTGRES_CONTAINER_HOST: lif-mdr-database-college
+    ports:
+      - "5446:5432" # Host port 5446 to access the college MDR Postgres
+    networks:
+      - lif-net-college
+
+  lif-mdr-database-restore-college:
+    image: postgres
+    command: postgres
+    depends_on:
+      - lif-mdr-database-college
+    environment:
+      POSTGRES_USER: ${LIF_MDR__DATABASE_RESTORE__USER:-postgres}
+      POSTGRES_PASSWORD: ${LIF_MDR__DATABASE_RESTORE__PASSWORD:-postgres}
+      POSTGRES_DB: ${LIF_MDR__DATABASE_RESTORE__DBNAME:-LIF}
+      POSTGRES_HOST: lif-mdr-database-college
+      PGPASSWORD: ${LIF_MDR__DATABASE_RESTORE__PASSWORD:-postgres}
+    volumes:
+      - ../../projects/lif_mdr_database/backup.sql:/backup.sql
+      - ../../projects/lif_mdr_database/restore.sh:/docker-entrypoint-initdb.d/restore.sh
+      - ../../sam/mdr-database/flyway/flyway-files/flyway/sql/mdr:/flyway-migrations:ro
+    entrypoint: /docker-entrypoint-initdb.d/restore.sh
+    networks:
+      - lif-net-college
+
+  lif-mdr-api-college:
+    build:
+      context: ../../
+      dockerfile: projects/lif_mdr_api/Dockerfile2
+    container_name: lif-mdr-api-college
+    environment:
+      POSTGRESQL_USER: ${LIF_MDR__API__DATABASE_USER:-postgres}
+      POSTGRESQL_PASSWORD: ${LIF_MDR__API__DATABASE_PASSWORD:-postgres}
+      POSTGRESQL_HOST: lif-mdr-database-college
+      POSTGRESQL_PORT: ${LIF_MDR__API__DATABASE_PORT:-5432}
+      POSTGRESQL_DB: ${LIF_MDR__API__DATABASE_DBNAME:-LIF}
+      CORS_ALLOW_ORIGINS: ${CORS_ALLOW_ORIGINS:-http://localhost:3000,http://localhost:5173,http://localhost:8080,https://mdr.lif.unicon.net,https://mdr.demo.lif.unicon.net/,http://localhost:5174}
+      CORS_ALLOW_CREDENTIALS: ${CORS_ALLOW_CREDENTIALS:-true}
+      CORS_ALLOW_METHODS: ${CORS_ALLOW_METHODS:-GET,POST,PUT,DELETE,OPTIONS,PATCH}
+      CORS_ALLOW_HEADERS: ${CORS_ALLOW_HEADERS:-*}
+      MDR__AUTH__JWT_SECRET_KEY: ${MDR__AUTH__JWT_SECRET_KEY:-change4}
+      # Same service keys as the district so one MDR_ADMIN_KEY drives both MDRs in the demo.
+      MDR__AUTH__SERVICE_API_KEY__GRAPHQL: ${MDR__AUTH__SERVICE_API_KEY__GRAPHQL:-changeme1}
+      MDR__AUTH__SERVICE_API_KEY__SEMANTIC_SEARCH: ${MDR__AUTH__SERVICE_API_KEY__SEMANTIC_SEARCH:-changeme2}
+      MDR__AUTH__SERVICE_API_KEY__TRANSLATOR: ${MDR__AUTH__SERVICE_API_KEY__TRANSLATOR:-changeme3}
+      MDR__AUTH__SERVICE_API_KEY__EXCHANGE_PARTNER: ${MDR__AUTH__SERVICE_API_KEY__EXCHANGE_PARTNER:-}
+      MDR__EXCHANGE__PUBLISHER_NAME: ${MDR__EXCHANGE__PUBLISHER_NAME_COLLEGE:-Riverbend Community College}
+      MDR__AUTH__METHODS_TO_REQUIRE_AUTH: ${MDR__AUTH__METHODS_TO_REQUIRE_AUTH:-GET,POST,PUT,DELETE}
+      MDR__AUTH__ACCESS_TOKEN_EXPIRE_MINUTES: ${MDR__AUTH__ACCESS_TOKEN_EXPIRE_MINUTES:-30}
+      MDR__AUTH__REFRESH_TOKEN_EXPIRE_DAYS: ${MDR__AUTH__REFRESH_TOKEN_EXPIRE_DAYS:-7}
+      MDR__AUTH__PUBLIC_ALLOWLIST_EXACT: ${MDR__AUTH__PUBLIC_ALLOWLIST_EXACT:-/login,/refresh-token,/health-check}
+      MDR__AUTH__PUBLIC_ALLOWLIST_STARTS_WITH: ${MDR__AUTH__PUBLIC_ALLOWLIST_STARTS_WITH:-/docs,/openapi.json}
+      MDR__COOKIE__SECURE: ${MDR__COOKIE__SECURE:-false}
+      MDR__INVITE__TOKEN_MAX_AGE_SECONDS: ${MDR__INVITE__TOKEN_MAX_AGE_SECONDS:-604800}
+      LIF_DEMO_USER_PASSWORD: ${LIF_DEMO_USER_PASSWORD:?set it in your .env - no default, see issue 1191}
+    ports:
+      - "8022:8012"
+    networks:
+      - lif-net-college
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys,urllib.request; sys.exit(0) if urllib.request.urlopen('http://localhost:8012/health-check').status==200 else sys.exit(1)"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      - lif-mdr-database-college
+
+  lif-mdr-app-college:
+    # The MDR web app bakes its API URL in at build time, so the college needs its own image.
+    # No LDE on the college side: the Export Playground page shows a "data formats" error there.
+    build:
+      context: ../../frontends/mdr-frontend
+      args:
+        LIF_MDR_API_URL: ${LIF_MDR_API_URL_COLLEGE:-http://localhost:8022}
+    container_name: lif-mdr-app-college
+    ports:
+      - "5174:80"
+    networks:
+      - lif-net-college
+    depends_on:
+      - lif-mdr-api-college
+
+  lif-translator-college:
+    build:
+      context: ../../
+      dockerfile: projects/lif_translator_api/Dockerfile2
+    container_name: lif-translator-college
+    environment:
+      LIF_MDR_API_URL: http://lif-mdr-api-college:8012
+      LIF_MDR_API_AUTH_TOKEN: ${LIF_TRANSLATOR__LIF_MDR_API_AUTH_TOKEN:-changeme3}
+      OPENAPI_DATA_MODEL_ID: ${OPENAPI_DATA_MODEL_ID:-17}
+      OPENAPI_JSON_FILENAME: ${OPENAPI_JSON_FILENAME:-openapi_constrained_with_interactions.json}
+      USE_OPENAPI_DATA_MODEL_FROM_FILE: ${USE_OPENAPI_DATA_MODEL_FROM_FILE:-false}
+    ports:
+      - "8017:8007"
+    networks:
+      - lif-net-college
+    depends_on:
+      - lif-mdr-api-college
+
+# The college side is isolated on its own network: the exchange is driven from
+# the host (scripts/exchange-demo.sh talks to both MDRs via localhost ports), so
+# no college service needs lif-net-mdr-db or the org networks.
+networks:
+  lif-net-college:

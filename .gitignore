@@ -231,3 +231,6 @@ pnpm-lock.yaml
 
 # Claude Code personal overrides (shared config lives in .claude/settings.json)
 .claude/settings.local.json
+
+# schema-exchange demo workdir (scripts/exchange-demo.sh)
+.exchange-demo/

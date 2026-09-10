@@ -64,6 +64,7 @@
 
 ### `docs/design/cross-cutting/` — Topics spanning services
 
+- [`schema-exchange.md`](design/cross-cutting/schema-exchange.md) — Pull-based exchange of Published data models / transformation groups between two MDRs (`/exchange`, read-only partner key, bundle format), EDUcore-seeded crosswalk drafts, district ↔ college demo topology, gaps.
 - [`schema-loading.md`](design/cross-cutting/schema-loading.md) — Schema loading pattern (MDR-at-startup, no silent file fallback), `SchemaStateManager`, PascalCase/camelCase convention, Strawberry GraphQL implementation details.
 - [`self-serve-tenant-auth.md`](design/cross-cutting/self-serve-tenant-auth.md) — Self-serve tenant onboarding narrative: Cognito sign-up → post-confirmation Lambda → schema-per-tenant provisioning → workspace selection cookie → invite tokens (#882/#883/#884).
 

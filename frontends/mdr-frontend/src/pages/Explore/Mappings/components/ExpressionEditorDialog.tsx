@@ -8,7 +8,7 @@ export interface ExpressionEditorDialogProps {
   open: boolean;
   transformation: TransformationData | null;
   onOpenChange?: (open: boolean) => void;
-  onSave: (update: { expression: string; expressionLanguage: string; name?: string }) => void;
+  onSave: (update: { expression: string; expressionLanguage: string; name?: string; notes?: string }) => void;
   onCancel: () => void;
   sourceModel?: DataModelWithDetailsWithTree | null;
   targetPath?: string | null;

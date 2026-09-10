@@ -1,0 +1,2183 @@
+{
+  "meta": {
+    "source": "EDUcore Education Standards Knowledge Graph (educore-standards MCP connector)",
+    "sourceStandard": "EdFi",
+    "sourceStandardVersion": "Ed-Fi Data Standard 1.0 (graph passport)",
+    "targetStandard": "LIF",
+    "targetStandardVersion": "2.0",
+    "hub": "CEDS 14.0.0.0",
+    "extractedAt": "2026-09-03",
+    "equivalenceRule": "EdFi value -EXACT_MATCH-> CEDS HubReference <-CLOSE_MATCH- LIF value; confidence is the LIF-side CLOSE_MATCH score",
+    "rowCount": 162,
+    "notes": "Candidate-quality (one hop is inferred). See README.md for the Cypher.",
+    "propertiesNote": "properties are INFERRED, not authored in EDUcore: an Ed-Fi property and a LIF property are proposed as equivalent when their option sets share CEDS value hubs. EDUcore has no property-level LIF matches (0 EXACT/CLOSE on LIF DmeProperty as of 2026-09-08). Confidence = mean value-row confidence for the set pair."
+  },
+  "properties": [
+    {
+      "sourcePath": "Candidate (TPDM).GenderDescriptor",
+      "targetPath": "Person.SexAndGender.sex",
+      "confidence": 1.0,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GenderDescriptor ~ Person.SexAndGender.sex (3 shared CEDS values)"
+    },
+    {
+      "sourcePath": "Assessment.GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "BellSchedule.GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "Calendar.GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "CompetencyObjective.GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "Course.GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "CourseOffering.GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "CourseTranscript.GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "Credential.GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "CreditsByCourse.GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "EducatorPreparationProgram (TPDM).GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "Intervention.GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "InterventionEffectiveness.GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "InterventionPrescription.GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "InterventionStudy.GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "LearningResource.GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "LearningStandard.GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "OpenStaffPosition.GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "PerformanceEvaluation (TPDM).GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "School.GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "Section.GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "StaffSchoolAssociation.GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "StudentAssessment.GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "StudentAssessmentRegistration.GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "StudentSchoolAssociation.GradeLevelDescriptor",
+      "targetPath": "Assessment.assessmentLevel",
+      "confidence": 0.904,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Assessment.assessmentLevel (12 shared CEDS values)"
+    },
+    {
+      "sourcePath": "Assessment.GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "BellSchedule.GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "Calendar.GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "CompetencyObjective.GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "Course.GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "CourseOffering.GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "CourseTranscript.GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "Credential.GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "CreditsByCourse.GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "EducatorPreparationProgram (TPDM).GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "Intervention.GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "InterventionEffectiveness.GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "InterventionPrescription.GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "InterventionStudy.GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "LearningResource.GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "LearningStandard.GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "OpenStaffPosition.GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "PerformanceEvaluation (TPDM).GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "School.GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "Section.GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "StaffSchoolAssociation.GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "StudentAssessment.GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "StudentAssessmentRegistration.GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "StudentSchoolAssociation.GradeLevelDescriptor",
+      "targetPath": "Course.courseApplicableEducationLevel",
+      "confidence": 0.964,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set GradeLevelDescriptor ~ Course.courseApplicableEducationLevel (11 shared CEDS values)"
+    },
+    {
+      "sourcePath": "Contact.LevelOfEducationDescriptor",
+      "targetPath": "Person.Demographics.highestLevelEducation",
+      "confidence": 0.766,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set LevelOfEducationDescriptor ~ Person.Demographics.highestLevelEducation (6 shared CEDS values)"
+    },
+    {
+      "sourcePath": "Staff.LevelOfEducationDescriptor",
+      "targetPath": "Person.Demographics.highestLevelEducation",
+      "confidence": 0.766,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set LevelOfEducationDescriptor ~ Person.Demographics.highestLevelEducation (6 shared CEDS values)"
+    },
+    {
+      "sourcePath": "ContentStandard.PublicationStatusDescriptor",
+      "targetPath": "CompetencyFramework.publicationStatus",
+      "confidence": 0.827,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set PublicationStatusDescriptor ~ CompetencyFramework.publicationStatus (5 shared CEDS values)"
+    },
+    {
+      "sourcePath": "BirthData.SexDescriptor",
+      "targetPath": "Person.SexAndGender.sex",
+      "confidence": 1.0,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set SexDescriptor ~ Person.SexAndGender.sex (3 shared CEDS values)"
+    },
+    {
+      "sourcePath": "Candidate (TPDM).SexDescriptor",
+      "targetPath": "Person.SexAndGender.sex",
+      "confidence": 1.0,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set SexDescriptor ~ Person.SexAndGender.sex (3 shared CEDS values)"
+    },
+    {
+      "sourcePath": "Contact.SexDescriptor",
+      "targetPath": "Person.SexAndGender.sex",
+      "confidence": 1.0,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set SexDescriptor ~ Person.SexAndGender.sex (3 shared CEDS values)"
+    },
+    {
+      "sourcePath": "Intervention.SexDescriptor",
+      "targetPath": "Person.SexAndGender.sex",
+      "confidence": 1.0,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set SexDescriptor ~ Person.SexAndGender.sex (3 shared CEDS values)"
+    },
+    {
+      "sourcePath": "InterventionPrescription.SexDescriptor",
+      "targetPath": "Person.SexAndGender.sex",
+      "confidence": 1.0,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set SexDescriptor ~ Person.SexAndGender.sex (3 shared CEDS values)"
+    },
+    {
+      "sourcePath": "LearningResource.SexDescriptor",
+      "targetPath": "Person.SexAndGender.sex",
+      "confidence": 1.0,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set SexDescriptor ~ Person.SexAndGender.sex (3 shared CEDS values)"
+    },
+    {
+      "sourcePath": "Staff.SexDescriptor",
+      "targetPath": "Person.SexAndGender.sex",
+      "confidence": 1.0,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set SexDescriptor ~ Person.SexAndGender.sex (3 shared CEDS values)"
+    },
+    {
+      "sourcePath": "StudentEducationOrganizationAssociation.SexDescriptor",
+      "targetPath": "Person.SexAndGender.sex",
+      "confidence": 1.0,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set SexDescriptor ~ Person.SexAndGender.sex (3 shared CEDS values)"
+    },
+    {
+      "sourcePath": "Address.StateAbbreviationDescriptor",
+      "targetPath": "Organization.Contact.Address.addressState",
+      "confidence": 0.872,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set StateAbbreviationDescriptor ~ Organization.Contact.Address.addressState (61 shared CEDS values)"
+    },
+    {
+      "sourcePath": "BirthData.StateAbbreviationDescriptor",
+      "targetPath": "Organization.Contact.Address.addressState",
+      "confidence": 0.872,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set StateAbbreviationDescriptor ~ Organization.Contact.Address.addressState (61 shared CEDS values)"
+    },
+    {
+      "sourcePath": "Credential.StateAbbreviationDescriptor",
+      "targetPath": "Organization.Contact.Address.addressState",
+      "confidence": 0.872,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set StateAbbreviationDescriptor ~ Organization.Contact.Address.addressState (61 shared CEDS values)"
+    },
+    {
+      "sourcePath": "InterventionStudy.StateAbbreviationDescriptor",
+      "targetPath": "Organization.Contact.Address.addressState",
+      "confidence": 0.872,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set StateAbbreviationDescriptor ~ Organization.Contact.Address.addressState (61 shared CEDS values)"
+    },
+    {
+      "sourcePath": "Address.StateAbbreviationDescriptor",
+      "targetPath": "Person.Contact.Address.addressState",
+      "confidence": 0.871,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set StateAbbreviationDescriptor ~ Person.Contact.Address.addressState (61 shared CEDS values)"
+    },
+    {
+      "sourcePath": "BirthData.StateAbbreviationDescriptor",
+      "targetPath": "Person.Contact.Address.addressState",
+      "confidence": 0.871,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set StateAbbreviationDescriptor ~ Person.Contact.Address.addressState (61 shared CEDS values)"
+    },
+    {
+      "sourcePath": "Credential.StateAbbreviationDescriptor",
+      "targetPath": "Person.Contact.Address.addressState",
+      "confidence": 0.871,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set StateAbbreviationDescriptor ~ Person.Contact.Address.addressState (61 shared CEDS values)"
+    },
+    {
+      "sourcePath": "InterventionStudy.StateAbbreviationDescriptor",
+      "targetPath": "Person.Contact.Address.addressState",
+      "confidence": 0.871,
+      "matchType": "VALUE_SET_EQUIVALENCE",
+      "cedsKey": "",
+      "cedsName": "inferred: option set StateAbbreviationDescriptor ~ Person.Contact.Address.addressState (61 shared CEDS values)"
+    }
+  ],
+  "values": [
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Tenth grade",
+      "targetOptionSet": "Assessment.assessmentLevel",
+      "targetValue": "10",
+      "confidence": 0.961,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181512",
+      "cedsName": "Tenth grade"
+    },
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Eleventh grade",
+      "targetOptionSet": "Assessment.assessmentLevel",
+      "targetValue": "11",
+      "confidence": 0.961,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181513",
+      "cedsName": "Eleventh grade"
+    },
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Twelfth grade",
+      "targetOptionSet": "Assessment.assessmentLevel",
+      "targetValue": "12",
+      "confidence": 0.961,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181514",
+      "cedsName": "Twelfth grade"
+    },
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Grade 13",
+      "targetOptionSet": "Assessment.assessmentLevel",
+      "targetValue": "13",
+      "confidence": 0.961,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181516",
+      "cedsName": "Grade 13"
+    },
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Adult Education",
+      "targetOptionSet": "Assessment.assessmentLevel",
+      "targetValue": "AE",
+      "confidence": 0.961,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181519",
+      "cedsName": "Adult Education"
+    },
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Infant/toddler",
+      "targetOptionSet": "Assessment.assessmentLevel",
+      "targetValue": "IT",
+      "confidence": 0.961,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181521",
+      "cedsName": "Infant/toddler"
+    },
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Kindergarten",
+      "targetOptionSet": "Assessment.assessmentLevel",
+      "targetValue": "KG",
+      "confidence": 0.961,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181525",
+      "cedsName": "Kindergarten"
+    },
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Prekindergarten",
+      "targetOptionSet": "Assessment.assessmentLevel",
+      "targetValue": "PK",
+      "confidence": 0.961,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181523",
+      "cedsName": "Prekindergarten"
+    },
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Preschool",
+      "targetOptionSet": "Assessment.assessmentLevel",
+      "targetValue": "PR",
+      "confidence": 0.961,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181522",
+      "cedsName": "Preschool"
+    },
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Transitional Kindergarten",
+      "targetOptionSet": "Assessment.assessmentLevel",
+      "targetValue": "TK",
+      "confidence": 0.961,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181524",
+      "cedsName": "Transitional Kindergarten"
+    },
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Eighth grade",
+      "targetOptionSet": "Assessment.assessmentLevel",
+      "targetValue": "8",
+      "confidence": 0.535,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181510",
+      "cedsName": "Eighth grade"
+    },
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Postsecondary",
+      "targetOptionSet": "Assessment.assessmentLevel",
+      "targetValue": "AudLevel:PostSecondaryLevel",
+      "confidence": 0.704,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181517",
+      "cedsName": "Postsecondary"
+    },
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Tenth grade",
+      "targetOptionSet": "Course.courseApplicableEducationLevel",
+      "targetValue": "10",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181512",
+      "cedsName": "Tenth grade"
+    },
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Eleventh grade",
+      "targetOptionSet": "Course.courseApplicableEducationLevel",
+      "targetValue": "11",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181513",
+      "cedsName": "Eleventh grade"
+    },
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Twelfth grade",
+      "targetOptionSet": "Course.courseApplicableEducationLevel",
+      "targetValue": "12",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181514",
+      "cedsName": "Twelfth grade"
+    },
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Grade 13",
+      "targetOptionSet": "Course.courseApplicableEducationLevel",
+      "targetValue": "13",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181516",
+      "cedsName": "Grade 13"
+    },
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Adult Education",
+      "targetOptionSet": "Course.courseApplicableEducationLevel",
+      "targetValue": "AE",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181519",
+      "cedsName": "Adult Education"
+    },
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Infant/toddler",
+      "targetOptionSet": "Course.courseApplicableEducationLevel",
+      "targetValue": "IT",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181521",
+      "cedsName": "Infant/toddler"
+    },
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Kindergarten",
+      "targetOptionSet": "Course.courseApplicableEducationLevel",
+      "targetValue": "KG",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181525",
+      "cedsName": "Kindergarten"
+    },
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Prekindergarten",
+      "targetOptionSet": "Course.courseApplicableEducationLevel",
+      "targetValue": "PK",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181523",
+      "cedsName": "Prekindergarten"
+    },
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Preschool",
+      "targetOptionSet": "Course.courseApplicableEducationLevel",
+      "targetValue": "PR",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181522",
+      "cedsName": "Preschool"
+    },
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Transitional Kindergarten",
+      "targetOptionSet": "Course.courseApplicableEducationLevel",
+      "targetValue": "TK",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181524",
+      "cedsName": "Transitional Kindergarten"
+    },
+    {
+      "sourceOptionSet": "GradeLevelDescriptor",
+      "sourceValue": "Ninth grade",
+      "targetOptionSet": "Course.courseApplicableEducationLevel",
+      "targetValue": "9",
+      "confidence": 0.599,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV002175181511",
+      "cedsName": "Ninth grade"
+    },
+    {
+      "sourceOptionSet": "PublicationStatusDescriptor",
+      "sourceValue": "Adopted",
+      "targetOptionSet": "CompetencyFramework.publicationStatus",
+      "targetValue": "Adopted",
+      "confidence": 0.827,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000698118390",
+      "cedsName": "Adopted"
+    },
+    {
+      "sourceOptionSet": "PublicationStatusDescriptor",
+      "sourceValue": "Deprecated",
+      "targetOptionSet": "CompetencyFramework.publicationStatus",
+      "targetValue": "Deprecated",
+      "confidence": 0.827,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000698118391",
+      "cedsName": "Deprecated"
+    },
+    {
+      "sourceOptionSet": "PublicationStatusDescriptor",
+      "sourceValue": "Draft",
+      "targetOptionSet": "CompetencyFramework.publicationStatus",
+      "targetValue": "Draft",
+      "confidence": 0.827,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000698118392",
+      "cedsName": "Draft"
+    },
+    {
+      "sourceOptionSet": "PublicationStatusDescriptor",
+      "sourceValue": "Published",
+      "targetOptionSet": "CompetencyFramework.publicationStatus",
+      "targetValue": "Published",
+      "confidence": 0.827,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000698118393",
+      "cedsName": "Published"
+    },
+    {
+      "sourceOptionSet": "PublicationStatusDescriptor",
+      "sourceValue": "Unknown",
+      "targetOptionSet": "CompetencyFramework.publicationStatus",
+      "targetValue": "Unknown",
+      "confidence": 0.827,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000698118394",
+      "cedsName": "Unknown"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "AL",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Alabama",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162543",
+      "cedsName": "Alabama"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "AL",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Alabama",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162543",
+      "cedsName": "Alabama"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "AK",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Alaska",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162542",
+      "cedsName": "Alaska"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "AK",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Alaska",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162542",
+      "cedsName": "Alaska"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "AS",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "AmericanSamoa",
+      "confidence": 0.571,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162546",
+      "cedsName": "American Samoa"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "AS",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "AmericanSamoa",
+      "confidence": 0.549,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162546",
+      "cedsName": "American Samoa"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "AZ",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Arizona",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162547",
+      "cedsName": "Arizona"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "AZ",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Arizona",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162547",
+      "cedsName": "Arizona"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "AR",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Arkansas",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162545",
+      "cedsName": "Arkansas"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "AR",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Arkansas",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162545",
+      "cedsName": "Arkansas"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "AE",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "ArmedForcesAfricaCanadaEuropeAndMideast",
+      "confidence": 0.45,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162541",
+      "cedsName": "Armed Forces Africa, Canada, Europe, and Mideast"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "AE",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "ArmedForcesAfricaCanadaEuropeAndMideast",
+      "confidence": 0.478,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162541",
+      "cedsName": "Armed Forces Africa, Canada, Europe, and Mideast"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "AP",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "ArmedForcesPacific",
+      "confidence": 0.553,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162544",
+      "cedsName": "Armed Forces Pacific"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "AP",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "ArmedForcesPacific",
+      "confidence": 0.585,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162544",
+      "cedsName": "Armed Forces Pacific"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "CA",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "California",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162548",
+      "cedsName": "California"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "CA",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "California",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162548",
+      "cedsName": "California"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "CO",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Colorado",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162549",
+      "cedsName": "Colorado"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "CO",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Colorado",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162549",
+      "cedsName": "Colorado"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "CT",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Connecticut",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162550",
+      "cedsName": "Connecticut"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "CT",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Connecticut",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162550",
+      "cedsName": "Connecticut"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "DE",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Delaware",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162552",
+      "cedsName": "Delaware"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "DE",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Delaware",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162552",
+      "cedsName": "Delaware"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "DC",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "DistrictOfColumbia",
+      "confidence": 0.59,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162551",
+      "cedsName": "District of Columbia"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "DC",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "DistrictOfColumbia",
+      "confidence": 0.594,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162551",
+      "cedsName": "District of Columbia"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "FM",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "FederatedStatesOfMicronesia",
+      "confidence": 0.678,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162554",
+      "cedsName": "Federated States of Micronesia"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "FM",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "FederatedStatesOfMicronesia",
+      "confidence": 0.658,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162554",
+      "cedsName": "Federated States of Micronesia"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "FL",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Florida",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162553",
+      "cedsName": "Florida"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "FL",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Florida",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162553",
+      "cedsName": "Florida"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "GA",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Georgia",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162555",
+      "cedsName": "Georgia"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "GA",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Georgia",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162555",
+      "cedsName": "Georgia"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "GU",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Guam",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162556",
+      "cedsName": "Guam"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "GU",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Guam",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162556",
+      "cedsName": "Guam"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "HI",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Hawaii",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162557",
+      "cedsName": "Hawaii"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "HI",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Hawaii",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162557",
+      "cedsName": "Hawaii"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "ID",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Idaho",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162559",
+      "cedsName": "Idaho"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "ID",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Idaho",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162559",
+      "cedsName": "Idaho"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "IL",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Illinois",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162560",
+      "cedsName": "Illinois"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "IL",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Illinois",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162560",
+      "cedsName": "Illinois"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "IN",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Indiana",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162561",
+      "cedsName": "Indiana"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "IN",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Indiana",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162561",
+      "cedsName": "Indiana"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "IA",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Iowa",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162558",
+      "cedsName": "Iowa"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "IA",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Iowa",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162558",
+      "cedsName": "Iowa"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "KS",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Kansas",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162562",
+      "cedsName": "Kansas"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "KS",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Kansas",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162562",
+      "cedsName": "Kansas"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "KY",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Kentucky",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162563",
+      "cedsName": "Kentucky"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "KY",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Kentucky",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162563",
+      "cedsName": "Kentucky"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "LA",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Louisiana",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162564",
+      "cedsName": "Louisiana"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "LA",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Louisiana",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162564",
+      "cedsName": "Louisiana"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "ME",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Maine",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162567",
+      "cedsName": "Maine"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "ME",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Maine",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162567",
+      "cedsName": "Maine"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "MH",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "MarshallIslands",
+      "confidence": 0.604,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162568",
+      "cedsName": "Marshall Islands"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "MH",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "MarshallIslands",
+      "confidence": 0.601,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162568",
+      "cedsName": "Marshall Islands"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "MD",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Maryland",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162566",
+      "cedsName": "Maryland"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "MD",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Maryland",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162566",
+      "cedsName": "Maryland"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "MA",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Massachusetts",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162565",
+      "cedsName": "Massachusetts"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "MA",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Massachusetts",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162565",
+      "cedsName": "Massachusetts"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "MI",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Michigan",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162569",
+      "cedsName": "Michigan"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "MI",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Michigan",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162569",
+      "cedsName": "Michigan"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "MN",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Minnesota",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162570",
+      "cedsName": "Minnesota"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "MN",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Minnesota",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162570",
+      "cedsName": "Minnesota"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "MS",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Mississippi",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162573",
+      "cedsName": "Mississippi"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "MS",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Mississippi",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162573",
+      "cedsName": "Mississippi"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "MO",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Missouri",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162571",
+      "cedsName": "Missouri"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "MO",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Missouri",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162571",
+      "cedsName": "Missouri"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "MT",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Montana",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162574",
+      "cedsName": "Montana"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "MT",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Montana",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162574",
+      "cedsName": "Montana"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "NE",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Nebraska",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162577",
+      "cedsName": "Nebraska"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "NE",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Nebraska",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162577",
+      "cedsName": "Nebraska"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "NV",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Nevada",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162581",
+      "cedsName": "Nevada"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "NV",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Nevada",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162581",
+      "cedsName": "Nevada"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "NH",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "NewHampshire",
+      "confidence": 0.564,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162578",
+      "cedsName": "New Hampshire"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "NH",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "NewHampshire",
+      "confidence": 0.552,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162578",
+      "cedsName": "New Hampshire"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "NJ",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "NewJersey",
+      "confidence": 0.584,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162579",
+      "cedsName": "New Jersey"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "NJ",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "NewJersey",
+      "confidence": 0.578,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162579",
+      "cedsName": "New Jersey"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "NM",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "NewMexico",
+      "confidence": 0.597,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162580",
+      "cedsName": "New Mexico"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "NM",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "NewMexico",
+      "confidence": 0.617,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162580",
+      "cedsName": "New Mexico"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "NY",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "NewYork",
+      "confidence": 0.517,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162582",
+      "cedsName": "New York"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "NY",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "NewYork",
+      "confidence": 0.499,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162582",
+      "cedsName": "New York"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "NC",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "NorthCarolina",
+      "confidence": 0.614,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162575",
+      "cedsName": "North Carolina"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "NC",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "NorthCarolina",
+      "confidence": 0.603,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162575",
+      "cedsName": "North Carolina"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "ND",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "NorthDakota",
+      "confidence": 0.632,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162576",
+      "cedsName": "North Dakota"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "ND",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "NorthDakota",
+      "confidence": 0.619,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162576",
+      "cedsName": "North Dakota"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "MP",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "NorthernMarianas",
+      "confidence": 0.596,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162572",
+      "cedsName": "Northern Marianas"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "MP",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "NorthernMarianas",
+      "confidence": 0.603,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162572",
+      "cedsName": "Northern Marianas"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "OH",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Ohio",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162583",
+      "cedsName": "Ohio"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "OH",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Ohio",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162583",
+      "cedsName": "Ohio"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "OK",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Oklahoma",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162584",
+      "cedsName": "Oklahoma"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "OK",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Oklahoma",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162584",
+      "cedsName": "Oklahoma"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "OR",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Oregon",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162585",
+      "cedsName": "Oregon"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "OR",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Oregon",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162585",
+      "cedsName": "Oregon"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "PW",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Palau",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162588",
+      "cedsName": "Palau"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "PW",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Palau",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162588",
+      "cedsName": "Palau"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "PA",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Pennsylvania",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162586",
+      "cedsName": "Pennsylvania"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "PA",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Pennsylvania",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162586",
+      "cedsName": "Pennsylvania"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "PR",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "PuertoRico",
+      "confidence": 0.553,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162587",
+      "cedsName": "Puerto Rico"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "PR",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "PuertoRico",
+      "confidence": 0.584,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162587",
+      "cedsName": "Puerto Rico"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "RI",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "RhodeIsland",
+      "confidence": 0.624,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162589",
+      "cedsName": "Rhode Island"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "RI",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "RhodeIsland",
+      "confidence": 0.621,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162589",
+      "cedsName": "Rhode Island"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "SC",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "SouthCarolina",
+      "confidence": 0.644,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162590",
+      "cedsName": "South Carolina"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "SC",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "SouthCarolina",
+      "confidence": 0.626,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162590",
+      "cedsName": "South Carolina"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "SD",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "SouthDakota",
+      "confidence": 0.664,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162591",
+      "cedsName": "South Dakota"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "SD",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "SouthDakota",
+      "confidence": 0.638,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162591",
+      "cedsName": "South Dakota"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "TN",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Tennessee",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162592",
+      "cedsName": "Tennessee"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "TN",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Tennessee",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162592",
+      "cedsName": "Tennessee"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "TX",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Texas",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162593",
+      "cedsName": "Texas"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "TX",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Texas",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162593",
+      "cedsName": "Texas"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "UT",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Utah",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162594",
+      "cedsName": "Utah"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "UT",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Utah",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162594",
+      "cedsName": "Utah"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "VT",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Vermont",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162597",
+      "cedsName": "Vermont"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "VT",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Vermont",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162597",
+      "cedsName": "Vermont"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "VI",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "VirginIslands",
+      "confidence": 0.56,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162596",
+      "cedsName": "Virgin Islands"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "VI",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "VirginIslands",
+      "confidence": 0.545,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162596",
+      "cedsName": "Virgin Islands"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "VA",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Virginia",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162595",
+      "cedsName": "Virginia"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "VA",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Virginia",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162595",
+      "cedsName": "Virginia"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "WA",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Washington",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162598",
+      "cedsName": "Washington"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "WA",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Washington",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162598",
+      "cedsName": "Washington"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "WV",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "WestVirginia",
+      "confidence": 0.58,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162600",
+      "cedsName": "West Virginia"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "WV",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "WestVirginia",
+      "confidence": 0.587,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162600",
+      "cedsName": "West Virginia"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "WI",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Wisconsin",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162599",
+      "cedsName": "Wisconsin"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "WI",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Wisconsin",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162599",
+      "cedsName": "Wisconsin"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "WY",
+      "targetOptionSet": "Organization.Contact.Address.addressState",
+      "targetValue": "Wyoming",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162601",
+      "cedsName": "Wyoming"
+    },
+    {
+      "sourceOptionSet": "StateAbbreviationDescriptor",
+      "sourceValue": "WY",
+      "targetOptionSet": "Person.Contact.Address.addressState",
+      "targetValue": "Wyoming",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000267162601",
+      "cedsName": "Wyoming"
+    },
+    {
+      "sourceOptionSet": "LevelOfEducationDescriptor",
+      "sourceValue": "Associate's Degree (two years or more)",
+      "targetOptionSet": "Person.Demographics.highestLevelEducation",
+      "targetValue": "Associate'sDegree(TwoYearsOrMore)",
+      "confidence": 0.768,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000141113646",
+      "cedsName": "Associate's degree (two years or more)"
+    },
+    {
+      "sourceOptionSet": "LevelOfEducationDescriptor",
+      "sourceValue": "Bachelor's",
+      "targetOptionSet": "Person.Demographics.highestLevelEducation",
+      "targetValue": "Bachelor's(Baccalaureate)Degree",
+      "confidence": 0.765,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000141113648",
+      "cedsName": "Bachelor's (Baccalaureate) degree"
+    },
+    {
+      "sourceOptionSet": "LevelOfEducationDescriptor",
+      "sourceValue": "Doctorate",
+      "targetOptionSet": "Person.Demographics.highestLevelEducation",
+      "targetValue": "Doctoral(Doctor's)Degree",
+      "confidence": 0.797,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000141113660",
+      "cedsName": "Doctoral (Doctor's) degree"
+    },
+    {
+      "sourceOptionSet": "LevelOfEducationDescriptor",
+      "sourceValue": "High School Diploma",
+      "targetOptionSet": "Person.Demographics.highestLevelEducation",
+      "targetValue": "HighSchoolDiploma",
+      "confidence": 0.683,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000141113637",
+      "cedsName": "High school diploma"
+    },
+    {
+      "sourceOptionSet": "LevelOfEducationDescriptor",
+      "sourceValue": "Master's",
+      "targetOptionSet": "Person.Demographics.highestLevelEducation",
+      "targetValue": "Master'sDegree(E.g.M.A.M.S.M. Eng.M.Ed.M.S.W.M.B.A.M.L.S.)",
+      "confidence": 0.861,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000141113654",
+      "cedsName": "Master's degree (e.g., M.A., M.S., M. Eng., M.Ed., M.S.W., M.B.A., M.L.S.)"
+    },
+    {
+      "sourceOptionSet": "LevelOfEducationDescriptor",
+      "sourceValue": "Some College No Degree",
+      "targetOptionSet": "Person.Demographics.highestLevelEducation",
+      "targetValue": "SomeCollegeButNoDegree",
+      "confidence": 0.723,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000141113643",
+      "cedsName": "Some college but no degree"
+    },
+    {
+      "sourceOptionSet": "GenderDescriptor",
+      "sourceValue": "Female",
+      "targetOptionSet": "Person.SexAndGender.sex",
+      "targetValue": "Female",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000255115740",
+      "cedsName": "Female"
+    },
+    {
+      "sourceOptionSet": "SexDescriptor",
+      "sourceValue": "Female",
+      "targetOptionSet": "Person.SexAndGender.sex",
+      "targetValue": "Female",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000255115740",
+      "cedsName": "Female"
+    },
+    {
+      "sourceOptionSet": "GenderDescriptor",
+      "sourceValue": "Male",
+      "targetOptionSet": "Person.SexAndGender.sex",
+      "targetValue": "Male",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000255116068",
+      "cedsName": "Male"
+    },
+    {
+      "sourceOptionSet": "SexDescriptor",
+      "sourceValue": "Male",
+      "targetOptionSet": "Person.SexAndGender.sex",
+      "targetValue": "Male",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000255116068",
+      "cedsName": "Male"
+    },
+    {
+      "sourceOptionSet": "GenderDescriptor",
+      "sourceValue": "Not Selected",
+      "targetOptionSet": "Person.SexAndGender.sex",
+      "targetValue": "NotSelected",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000255116282",
+      "cedsName": "Not selected"
+    },
+    {
+      "sourceOptionSet": "SexDescriptor",
+      "sourceValue": "Not Selected",
+      "targetOptionSet": "Person.SexAndGender.sex",
+      "targetValue": "NotSelected",
+      "confidence": 1.0,
+      "matchType": "EXACT_MATCH/CLOSE_MATCH",
+      "cedsKey": "OV000255116282",
+      "cedsName": "Not selected"
+    }
+  ]
+}

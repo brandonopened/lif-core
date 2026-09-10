@@ -26,14 +26,32 @@ SECRET_KEY = settings.mdr__auth__jwt_secret_key
 ALGORITHM = "HS256"
 
 API_KEY_HEADER_NAME = "X-API-Key"
-# Recommended to use hard-to-guess names for the API keys.
-API_KEYS = {
-    settings.mdr__auth__service_api_key__graphql: "graphql-service",
-    settings.mdr__auth__service_api_key__semantic_search: "semantic-search-service",
-    settings.mdr__auth__service_api_key__translator: "translator-service",
-    settings.mdr__auth__service_api_key__post_confirm: "post-confirm-service",
-    settings.mdr__auth__service_api_key__learner_data_export: "learner-data-export-service",
-}
+# Peer-MDR schema-exchange key: read-only and confined to /exchange (enforced in AuthMiddleware).
+EXCHANGE_PARTNER_SERVICE_NAME = "exchange-partner-service"
+EXCHANGE_PARTNER_PRINCIPAL = f"service:{EXCHANGE_PARTNER_SERVICE_NAME}"
+
+
+def _build_api_keys(settings) -> Dict[str, str]:
+    # Recommended to use hard-to-guess names for the API keys.
+    api_keys = {
+        settings.mdr__auth__service_api_key__graphql: "graphql-service",
+        settings.mdr__auth__service_api_key__semantic_search: "semantic-search-service",
+        settings.mdr__auth__service_api_key__translator: "translator-service",
+        settings.mdr__auth__service_api_key__post_confirm: "post-confirm-service",
+        settings.mdr__auth__service_api_key__learner_data_export: "learner-data-export-service",
+    }
+    # Registered only when configured — an unset partner key must not become a known key (#1191).
+    if settings.mdr__auth__service_api_key__exchange_partner:
+        api_keys[settings.mdr__auth__service_api_key__exchange_partner] = EXCHANGE_PARTNER_SERVICE_NAME
+    return api_keys
+
+
+API_KEYS = _build_api_keys(settings)
+
+
+def _is_exchange_partner_allowed(method: str, path: str) -> bool:
+    return method == "GET" and path.startswith("/exchange/")
+
 
 # Cognito configuration
 COGNITO_USER_POOL_ID = settings.mdr__auth__cognito_user_pool_id
@@ -203,6 +221,14 @@ class AuthMiddleware(BaseHTTPMiddleware):
                 if service_name:
                     logger.info("Auth API key verified for service: %s", service_name)
                     request.state.principal = f"service:{service_name}"
+                    if request.state.principal == EXCHANGE_PARTNER_PRINCIPAL and not _is_exchange_partner_allowed(
+                        request.method, request.url.path
+                    ):
+                        logger.warning("Exchange partner key used outside GET /exchange: %s", request.url.path)
+                        return JSONResponse(
+                            status_code=status.HTTP_403_FORBIDDEN,
+                            content={"detail": "Exchange partner keys are read-only and limited to /exchange"},
+                        )
                 else:
                     logger.warning("Auth API key unknown or invalid. Trying Bearer token...")
 

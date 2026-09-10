@@ -389,6 +389,7 @@ const MappingsView: React.FC = () => {
             expression: string;
             expressionLanguage: string;
             name?: string;
+            notes?: string;
         }) => {
             if (!editingTransformation) return;
             try {
@@ -399,6 +400,7 @@ const MappingsView: React.FC = () => {
                         Expression: update.expression,
                         ExpressionLanguage: update.expressionLanguage as any,
                         Name: update.name || editingTransformation.Name,
+                        Notes: update.notes ?? editingTransformation.Notes,
                     } as any
                 );
                 setTransformations((prev) =>

@@ -24,6 +24,7 @@ export interface ExpressionEditorProps {
         expression: string;
         expressionLanguage: string;
         name?: string;
+        notes?: string;
     }) => void;
     onCancel: () => void;
 }
@@ -90,6 +91,7 @@ const ExpressionEditor: React.FC<ExpressionEditorProps> = ({
     // Force JSONata going forward
     const expressionLanguage = 'JSONata';
     const [name, setName] = useState<string>(transformation.Name || '');
+    const [notes, setNotes] = useState<string>(transformation.Notes || '');
     // Reversible removed per requirements
     const [filter, setFilter] = useState<string>('');
     const [activeElementCategory, setActiveElementCategory] =
@@ -221,8 +223,9 @@ const ExpressionEditor: React.FC<ExpressionEditorProps> = ({
             expression,
             expressionLanguage,
             name: name || transformation.Name,
+            notes,
         });
-    }, [expression, expressionLanguage, name, onSave, transformation.Name]);
+    }, [expression, expressionLanguage, name, notes, onSave, transformation.Name]);
 
     // No longer auto-prefill with target path assignment.
 
@@ -554,6 +557,17 @@ const ExpressionEditor: React.FC<ExpressionEditorProps> = ({
                         )}
                     </div>
                 </div>
+            </div>
+            <div className="expr-editor__field-group">
+                <label className="expr-editor__label">Notes</label>
+                <textarea
+                    className="expr-editor__textarea"
+                    rows={2}
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                    placeholder="Optional notes about this mapping (rationale, caveats, TODOs)..."
+                    spellCheck={true}
+                />
             </div>
             <div className="expr-editor__footer">
                 <div className="expr-editor__actions">

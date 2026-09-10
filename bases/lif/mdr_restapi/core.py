@@ -13,6 +13,7 @@ from lif.mdr_restapi import (
     entity_association_endpoints,
     entity_attribute_association_endpoints,
     entity_endpoints,
+    exchange_endpoints,
     generate_jinja_endpoint,
     import_export_endpoints,
     inclusions_endpoints,
@@ -492,6 +493,7 @@ app.include_router(datamodel_constraints_endpoints.router, prefix="/datamodel_co
 
 app.include_router(tenant_endpoints.router, prefix="/tenants")
 app.include_router(developer_api_key_endpoints.router, prefix="/api-keys")
+app.include_router(exchange_endpoints.router, prefix="/exchange")
 
 # Demo-only endpoints (ADR 0004): a base-level demo decoration serving the shared
 # demo personas (#1055) for demo UIs like the LDE playground (#1036). Mounted

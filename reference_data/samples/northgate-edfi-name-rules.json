@@ -1,0 +1,55 @@
+{
+  "_comment": "Demo-local LIF-authored rules for the real Ed-Fi Student name fields (FirstName / MiddleName / LastSurname -> LIF Person.Name). Same shape as an exported MDR transformation group so scripts/generate-crosswalk-draft.py accepts it via --authored; pass it BEFORE the reference Ed-Fi file so these rows win the firstName / lastName targets (the reference rules split the seed model's single Student.Name string). Numeric EntityIdPath prefixes are ignored; resolution is by UniqueName.",
+  "Name": "Northgate Ed-Fi v5 name rules",
+  "GroupVersion": "1.0",
+  "Transformations": [
+    {
+      "Name": "Person.Name.firstName",
+      "Expression": "{ \"Person\": Student.{ \"Name\": [{ \"firstName\": FirstName }] } }",
+      "ExpressionLanguage": "JSONata",
+      "Notes": "Direct copy of the Ed-Fi Student.FirstName element.",
+      "SourceAttributes": [
+        {
+          "EntityIdPath": "0:Student,0:~Student.FirstName"
+        }
+      ],
+      "TargetAttribute": {
+        "EntityIdPath": "0:Person,0:Person.Name,0:~Person.Name.firstName"
+      }
+    },
+    {
+      "Name": "Person.Name.lastName",
+      "Expression": "{ \"Person\": Student.{ \"Name\": [{ \"lastName\": LastSurname }] } }",
+      "ExpressionLanguage": "JSONata",
+      "Notes": "Direct copy of the Ed-Fi Student.LastSurname element.",
+      "SourceAttributes": [
+        {
+          "EntityIdPath": "0:Student,0:~Student.LastSurname"
+        }
+      ],
+      "TargetAttribute": {
+        "EntityIdPath": "0:Person,0:Person.Name,0:~Person.Name.lastName"
+      }
+    },
+    {
+      "Name": "Person.Name.initials",
+      "Expression": "{ \"Person\": Student.{ \"Name\": [{ \"initials\": $join([FirstName, MiddleName, LastSurname][$boolean($)].$substring($, 0, 1), \"\") }] } }",
+      "ExpressionLanguage": "JSONata",
+      "Notes": "3:1 rule. Ed-Fi has no initials element; built from the first letter of FirstName, MiddleName (optional) and LastSurname. Lossy: a hyphenated or multi-word surname contributes one letter.",
+      "SourceAttributes": [
+        {
+          "EntityIdPath": "0:Student,0:~Student.FirstName"
+        },
+        {
+          "EntityIdPath": "0:Student,0:~Student.MiddleName"
+        },
+        {
+          "EntityIdPath": "0:Student,0:~Student.LastSurname"
+        }
+      ],
+      "TargetAttribute": {
+        "EntityIdPath": "0:Person,0:Person.Name,0:~Person.Name.initials"
+      }
+    }
+  ]
+}

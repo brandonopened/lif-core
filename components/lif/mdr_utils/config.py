@@ -22,6 +22,11 @@ class Settings(BaseSettings):
     # Used by the Cognito post-confirmation Lambda to call POST /tenants/provision
     # when a new user registers (issue #883 PR 4b).
     mdr__auth__service_api_key__post_confirm: str = "changeme5"
+    # Read-only key a peer MDR uses to pull /exchange bundles. No default on purpose: unset means
+    # no partner key is registered (see #1191 — a fallback would make the key public).
+    mdr__auth__service_api_key__exchange_partner: str | None = None
+    # Name this MDR advertises in /exchange/catalog and bundle manifests.
+    mdr__exchange__publisher_name: str = "unnamed-mdr"
     mdr__auth__public_allowlist_exact: str = "/login,/refresh-token,/health-check,/health"
     mdr__auth__public_allowlist_starts_with: str = "/docs,/openapi.json"
     # Cognito configuration (empty user_pool_id = Cognito auth disabled)

@@ -3,6 +3,9 @@
     "flagWords": [],
     "words": [
         "hostnames",
+        "Riverbend",
+        "Northgate",
+        "tonumber",
         "toplevel",
         "ntvs",
         "njsproj",
@@ -249,7 +252,12 @@
         "webassets",
         "workpreference",
         "worktree",
-        "xform"
+        "xform",
+        "educore",
+        "edfi",
+        "PESC",
+        "Postsecondary",
+        "dedup"
     ],
     "ignorePaths": [
         ".git/",
@@ -267,5 +275,6 @@
         "projects/lif_mdr_database/dataset/init.sql",
         "sam/mdr-database/flyway/flyway-files/flyway/sql/mdr/V1.1__metadata_repository_init.sql",
         "test/scripts/postman/LIF_MDR.postman_collection.json",
+        "reference_data/crosswalks/**/*.json",
     ]
 }

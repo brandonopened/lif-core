@@ -619,7 +619,10 @@ async def create_data_model_from_openapi_schema(
     contributor_organization: Optional[str],
     state: Optional[str] = "Draft",
     tags: Optional[str] = None,
+    commit: bool = True,
 ) -> DataModelDTO:
+    # When commit=False the caller owns the transaction boundary (used by the schema-exchange receive
+    # so data models + transformation group land in one atomic transaction); we flush but never commit.
     # Check if DataModel with same Name, DataModelVersion, and ContributorOrganization already exists
     existing_dm_stmt = select(DataModel).where(
         DataModel.Name == data_model_name,
@@ -678,6 +681,9 @@ async def create_data_model_from_openapi_schema(
             session, schema_name, schema, new_data_model.Id, openapi_schema, data_model_type
         )
 
-    await session.commit()
+    if commit:
+        await session.commit()
+    else:
+        await session.flush()
     await session.refresh(new_data_model)
     return DataModelDTO.from_orm(new_data_model)
